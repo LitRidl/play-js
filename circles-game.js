@@ -1,20 +1,3 @@
-CanvasRenderingContext2D.prototype.drawCircle = function (x, y, radius) {
-    this.beginPath();
-
-    this.arc(x, y, radius, 0, 2 * Math.PI);
-
-    this.fill();
-    this.stroke();
-
-    this.closePath();
-};
-
-var canvas = document.getElementById('viewport');
-var ctx = canvas.getContext('2d');
-
-var w  = canvas.width,
-    h = canvas.height;
-
 var fps = 60;
 
 var colors = {
@@ -26,7 +9,7 @@ var colors = {
     'dark':   '#333333'
 };
 
-var drawBackground = function (w, h, fill, stroke) {
+var drawBackground = function (ctx, w, h, fill, stroke) {
     ctx.fillStyle = fill;
     ctx.fillRect(0, 0, w, h);
 
@@ -37,22 +20,22 @@ var drawBackground = function (w, h, fill, stroke) {
 
 var dx = 0, dy = 0;
 
-var render = function () {
-    drawBackground(w, h, colors.red, colors.dark);
+var render = function (ctx) {
+    var w = ctx.canvas.width,
+        h = ctx.canvas.height;
+
+    drawBackground(ctx, w, h, colors.red, colors.dark);
 
     ctx.fillStyle = colors.blue;
     ctx.lineWidth = 2;
     ctx.strokeStyle = colors.yellow;
-    
+
     dx = (dx + 1) % (w / 2);
     dy = (dy + 1) % (h / 2);
     ctx.drawCircle(w / 2 + dx, h / 2 + dy, 50 - 2);
 };
 
-var step = function () {
-    setTimeout(function () {
-        requestAnimationFrame(step);
-        render();
-    }, 1000 / fps);
-};
-step();
+document.addEventListener("DOMContentLoaded", function () {
+    var canvas = document.getElementById('viewport').getContext('2d');
+    Game.launch(canvas, render, fps);
+});

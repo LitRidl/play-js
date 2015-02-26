@@ -1,8 +1,9 @@
 var Game = {
-	launch: function (ctx, render, fps) {
+	launch: function (canvas, render, fps) {
+		var ctx = canvas.getContext('2d');
 		(function step () {
 	        setTimeout(function () {
-	            requestAnimationFrame(step);
+	            requestAnimationFrame(step, canvas);
 	            render(ctx);
 	        }, 1000 / fps);
 	    })();

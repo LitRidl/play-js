@@ -36,6 +36,7 @@ var render = function (ctx) {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    var canvas = document.getElementById('viewport').getContext('2d');
+    var canvas = document.getElementById('viewport');
+    
     Game.launch(canvas, render, fps);
 });

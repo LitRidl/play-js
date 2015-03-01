@@ -1,5 +1,10 @@
-function Scene(restitution) {
+function Scene(restitution, h, w, speed) {
     this.circles = [];
+
+    this.h = h;
+    this.w = w;
+
+    this.speed = speed || 1;
 
     this.restitution = restitution || 1.0;
 };
@@ -9,6 +14,9 @@ Scene.prototype.addCircle = function (circle) {
     this.circles.push(circle);
 };
 
+Scene.prototype.cutoffDisplacement = function (x, w, margin) {
+    return (x <= margin + c.radius || x >= w - c.radius - margin);
+};
 
 Scene.prototype.update = function (dt) {
     dt = dt || 1;
@@ -20,13 +28,16 @@ Scene.prototype.update = function (dt) {
     var radius = circles[0].radius;
 
 
-    var h = 600, w = 800;
+    var h = this.h,
+        w = this.w;
+
+    var margin = 5;
 
     for (var i = 0, length = circles.length; i < length; ++i) {
-        if (circles[i].x <= 0 + circles[i].radius || circles[i].x >= w - circles[i].radius) {
+        if (circles[i].x <= margin + circles[i].radius || circles[i].x >= w - circles[i].radius - margin) {
             circles[i].vx = -circles[i].vx;
         }
-        if (circles[i].y <= 0 + circles[i].radius || circles[i].y >= h - circles[i].radius) {
+        if (circles[i].y <= margin + circles[i].radius || circles[i].y >= h - circles[i].radius - margin) {
             circles[i].vy = -circles[i].vy;
         }
     };
@@ -52,8 +63,6 @@ Scene.prototype.update = function (dt) {
         }
     }
 
-    var h = 600, w = 800;
-
     for (var i = 0, length = circles.length; i < length; ++i) {
         if (circles[i].x <= 0 + circles[i].radius || circles[i].x >= w - circles[i].radius) {
             circles[i].vx = -circles[i].vx;
@@ -70,19 +79,13 @@ Scene.prototype.collide = function () {
     var circles_new = new Array(circles.length);
     for (var i = circles_new.length - 1; i >= 0; i--) {
         circles_new[i] = circles[i].clone();
-    };
+    }
 
     var a, b;
     for (var i = 0, length = circles.length; i < length; ++i) {
-        // if (circles[i].vx == 0 && circles[i].vy == 0) {
-        //     continue;
-        // }
         for (var j = i + 1; j < length; ++j) {
-            if (i == j) {
-                continue;
-            }
             if (circles[i].distance(circles[j]) <= circles[i].radius + circles[j].radius) {
-                console.log("collision between ", i, " and ", j);
+                // console.log("collision between ", i, " and ", j);
                 a = circles[i];
                 b = circles[j];
 
@@ -90,11 +93,6 @@ Scene.prototype.collide = function () {
                 circles_new[i].vy = (a.vy * (a.mass - b.mass) + (2 * b.mass * b.vy)) / (a.mass + b.mass);
                 circles_new[j].vx = (b.vx * (b.mass - a.mass) + (2 * a.mass * a.vx)) / (a.mass + b.mass);
                 circles_new[j].vy = (b.vy * (b.mass - a.mass) + (2 * a.mass * a.vy)) / (a.mass + b.mass);
-
-                // circles_new[i].x += circles_new[i].vx;
-                // circles_new[i].y += circles_new[i].vy;
-                // circles_new[j].x += circles_new[j].vx;
-                // circles_new[j].y += circles_new[j].vy;
             }
         }
     }
@@ -125,14 +123,12 @@ Scene.prototype.gatherSelectedTo = function (x, y) {
 
             v = Math.sqrt(dx * dx + dy * dy);
 
-            circles[i].vx = dx / v;
-            circles[i].vy = dy / v;
+            circles[i].vx = dx / v * this.speed;
+            circles[i].vy = dy / v * this.speed;
 
             circles[i].selected = false;
         }
-    };
-
-    //this.circles = circles;
+    }
 };
 
 Scene.prototype.checkNoOverlaps = function (x, y) {

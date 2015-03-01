@@ -3,9 +3,10 @@ var Game = function (settings) {
         return;
     }
 
-    this.settings = settings;
+    this.settings = settings || { };
 
     this.fps = settings.fps || 60;
+    this.speed = settings.speed || 1;
     this.canvas = settings.canvas;
 
     this.h = this.canvas.height;
@@ -14,7 +15,7 @@ var Game = function (settings) {
     this.ctx = this.canvas.getContext('2d');
     //this.ctx.translate(0.5, 0.5);
 
-    this.scene = new Scene(Math.pow(settings.dampening, 1.0 / this.fps));
+    this.scene = new Scene(Math.pow(settings.dampening, 1.0 / this.fps), this.h, this.w, this.speed);
 
     this.messages = [];
 };

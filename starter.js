@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas: canvas,
 
         fps: 60,
+        speed: 3,
 
         dampening: 0.98,
 

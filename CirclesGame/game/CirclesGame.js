@@ -42,10 +42,10 @@ CirclesGame.prototype.render = function () {
                         settings.background_border,
                         settings.background_linewidth);
 
-    ctx.lineWidth = settings.circle_linewidth;
-    ctx.strokeStyle = settings.circle_border;
+    // ctx.lineWidth = settings.circle_linewidth;
+    // ctx.strokeStyle = settings.circle_border;
 
-    var radius = settings.circle_radius - settings.circle_linewidth;
+    var radius = settings.circle_radius; // - settings.circle_linewidth;
 
     for (var i = 0, length = circles.length; i < length; ++i) {
         if (!circles[i].selected) {

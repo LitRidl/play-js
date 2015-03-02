@@ -1,0 +1,11 @@
+body {
+    overflow: hidden;
+    margin: 0;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica;
+}
+
+#viewport-wrapper {
+    padding-top: 20px;
+    text-align: center;
+}

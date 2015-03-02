@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         circle_radius: 50,
         circle_color: colors.blue,
-        circle_border: colors.yellow,
-        circle_linewidth: 1,
+        // circle_border: colors.yellow,
+        // circle_linewidth: 0,
 
         circle_color_selected: colors.red
     };

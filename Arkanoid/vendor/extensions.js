@@ -5,7 +5,7 @@
 	    this.arc(x, y, radius, 0, 2 * Math.PI);
 
 	    this.fill();
-	    this.stroke();
+	    // this.stroke();
 
 	    this.closePath();
 	}

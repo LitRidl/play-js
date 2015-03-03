@@ -1,4 +1,4 @@
-var Brick = function (x, y, h, w, color) {
+var Brick = function (x, y, w, h, color, speed) {
     this.x = x;
     this.y = y;
 
@@ -12,6 +12,8 @@ var Brick = function (x, y, h, w, color) {
 
     this.vx = 0;
     this.vy = 0;
+
+    this.speed = speed || 0;
 };
 
 Brick.prototype.distance = function (b2) {

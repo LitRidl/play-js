@@ -1,5 +1,5 @@
 var Platform = function () {
-    Game.apply(this, arguments);
+    Brick.apply(this, arguments);
 };
 
 Platform.prototype = new Brick();

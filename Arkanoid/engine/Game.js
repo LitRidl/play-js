@@ -7,6 +7,7 @@ var Game = function (settings) {
 
     this.fps = settings.fps || 60;
     this.speed = settings.speed || 1;
+
     this.canvas = settings.canvas;
 
     this.h = this.canvas.height;

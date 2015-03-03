@@ -6,6 +6,12 @@ var ArkanoidGame = function (settings) {
 
     this.platform_width  = settings.platform_width;
     this.platform_height = settings.platform_height;
+    this.platform_color  = settings.platform_color;
+    this.platform_speed  = settings.platform_speed;
+
+    this.ball_radius = settings.ball_radius;
+    this.ball_color  = settings.ball_color;
+    this.ball_speed  = settings.ball_speed;
 };
 
 ArkanoidGame.prototype = new Game();
@@ -38,11 +44,20 @@ ArkanoidGame.prototype.drawMessages = function () {
 
 ArkanoidGame.prototype.setUpLevel = function () {
     var scene = this.scene;
+
+    var platform_x = this.w / 2 - this.platform_width / 2,
+        platform_y = this.h - 2 * this.platform_height;
+
+    scene.platform = new Platform(platform_x, platform_y,
+                                  this.platform_width, this.platform_height,
+                                  this.platform_color, this.platform_speed);
+
+    scene.ball = new Ball(this.w / 2 - this.ball_radius, platform_y - 2 * this.ball_radius,
+                          this.ball_radius * 2, this.ball_radius * 2,
+                          this.ball_color, this.ball_speed);
+    scene.ball.sticky = true;
+
     var brick;
-
-    scene.platform = new Platform(this.w / 2 - 50 / 2, 10, 50, 10);
-    scene.ball = new Ball();
-
     for (var row = 0; row < this.rows; ++row) {
         for (var col = 0; col < this.bricks_in_row; ++col) {
             brick = new Brick();
@@ -64,26 +79,23 @@ ArkanoidGame.prototype.render = function () {
 
     var ctx = this.ctx;
     var settings = this.settings;
-    var circles = this.scene.circles;
+    var bricks = this.scene.bricks;
 
     this.drawBackground(settings.background_color,
                         settings.background_border,
                         settings.background_linewidth);
 
-    // ctx.lineWidth = settings.circle_linewidth;
-    // ctx.strokeStyle = settings.circle_border;
-
-    var radius = settings.circle_radius; // - settings.circle_linewidth;
-
-    for (var i = 0, length = circles.length; i < length; ++i) {
-        if (!circles[i].selected) {
-            ctx.fillStyle = circles[i].color;
-        } else {
-            ctx.fillStyle = settings.circle_color_selected;
-        }
-
-        ctx.drawCircle(circles[i].x, circles[i].y, radius);
+    for (var i = 0, length = bricks.length; i < length; ++i) {
+        ctx.fillStyle = bricks[i].color;
+        ctx.fillRect(bricks[i].x, bricks[i].y, bricks[i].w, bricks[i].h);
     }
+
+    ctx.fillStyle = this.scene.platform.color;
+    ctx.fillRect(this.scene.platform.x, this.scene.platform.y, this.scene.platform.w, this.scene.platform.h);
+
+    ctx.fillStyle = this.scene.ball.color;
+    ctx.drawCircle(this.scene.ball.x + this.scene.ball.radius, this.scene.ball.y +  + this.scene.ball.radius,
+                   this.scene.ball.radius);
 
     this.drawMessages();
 

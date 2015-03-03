@@ -41,8 +41,14 @@ document.addEventListener("DOMContentLoaded", function () {
         rows: 3,
         bricks_in_row: 6,
 
-        platform_width: 50,
-        platform_height: 10,
+        platform_width: 200,
+        platform_height: 20,
+        platform_color: colors.dark,
+        platform_speed: 20,
+
+        ball_radius: 17,
+        ball_color: colors.red,
+        ball_speed: 8,
 
         background_color: colors.white,
         background_border: colors.dark,
@@ -53,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     var game = new ArkanoidGame(settings);
+    game.setUpLevel();
     game.launch();
 
     var keydownHandler = function (e) {

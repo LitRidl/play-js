@@ -12,30 +12,74 @@ function Scene(h, w, speed) {
 
 Scene.prototype.movePlatform = function (direction) {
     var dx = 0;
-    // ADD WALL COLLISION CHECKS !!!!
     if (direction == 'left') {
-        dx = -speed;
+        dx = -this.platform.speed;
     } else if (direction == 'right') {
-        dx = +speed;
+        dx = +this.platform.speed;
     }
+
+    var margin = 10; // this.ball.radius; // ??
+    if (this.platform.x + dx <= 0) {
+        dx = margin - this.platform.x;
+    } else if (this.platform.x + dx + this.platform.w >= this.w - margin) {
+        dx = this.w - margin - this.platform.x - this.platform.w;
+    }
+
     this.platform.x += dx;
+
+    if (this.ball.sticky) {
+        this.ball.x += dx;
+    }
 };
 
 Scene.prototype.launchBall = function () {
-    this.ball.vx = 0;
-    this.ball.vy = this.speed;
+    if (this.ball.sticky) {
+        this.ball.vx = 0;
+        this.ball.vy = -this.ball.speed;
+
+        this.ball.sticky = false;
+    }
 };
 
 Scene.prototype.addBrick = function (brick) {
     this.bricks.push(brick);
 };
 
-Scene.prototype.cutoffDisplacement = function (x, w, margin) {
-    return (x <= margin + c.radius || x >= w - c.radius - margin);
-};
-
 Scene.prototype.update = function (dt) {
-    dt = dt || 1;
+    var margin = 5;
+
+    var h = this.h,
+        w = this.w;
+
+    this.ball.x += this.ball.vx;
+    this.ball.y += this.ball.vy;
+
+    // BUGGED
+    if (this.platform.isOverlapping(this.ball) && !this.ball.sticky) {
+        var dx = this.ball.x_mid - this.platform.x; // ???
+        var dx_relative = dx / this.platform.w;
+        console.log(dx, dx_relative);
+
+        this.ball.vy *= -1;
+        if (dx_relative > 0.33 && dx_relative < 0.66) {
+            this.ball.vx *= -1;
+        } else {
+            var v = (dx_relative - 0.5) * Math.PI;
+            this.ball.vx = Math.cos(v);
+            console.log(v, Math.cos(v));
+        }
+
+        //this.ball.sticky = true;
+    }
+
+    if (this.ball.x <= margin + this.ball.radius || this.ball.x >= w - this.ball.radius - margin) {
+        this.ball.vx = -this.ball.vx;
+    }
+    if (this.ball.y <= margin + this.ball.radius || this.ball.y >= h - this.ball.radius - margin) {
+        this.ball.vy = -this.ball.vy;
+    }
+
+
     if (this.bricks.length == 0) {
         return;
     }
@@ -43,11 +87,6 @@ Scene.prototype.update = function (dt) {
     var bricks = this.bricks;
     var radius = bricks[0].radius;
 
-
-    var h = this.h,
-        w = this.w;
-
-    var margin = 5;
 
     for (var i = 0, length = bricks.length; i < length; ++i) {
         if (bricks[i].x <= margin + bricks[i].radius || bricks[i].x >= w - bricks[i].radius - margin) {

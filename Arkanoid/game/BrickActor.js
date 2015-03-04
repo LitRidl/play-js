@@ -5,8 +5,8 @@ var Brick = function (x, y, w, h, color, speed) {
     this.h = h;
     this.w = w;
 
-    this.x_mid = x + w / 2;
-    this.y_mid = y + h / 2;
+    //this.x_mid = x + w / 2;
+    //this.y_mid = y + h / 2;
 
     this.color = color;
 

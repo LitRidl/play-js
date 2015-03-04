@@ -40,15 +40,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
         rows: 3,
         bricks_in_row: 6,
+        balls: 3,
+        score_color: colors.black,
+
+        angular_dampening: 0.8,
 
         platform_width: 200,
         platform_height: 20,
         platform_color: colors.dark,
-        platform_speed: 20,
+        platform_side_color: colors.purple,
+        platform_center_ratio: 0.6, // % of platform = elastic collision
+        platform_speed: 25,
 
         ball_radius: 17,
         ball_color: colors.red,
-        ball_speed: 8,
+        ball_speed: 6,
+
+        brick_color: colors.green,
+
+        score_per_brick: 50,
 
         background_color: colors.white,
         background_border: colors.dark,

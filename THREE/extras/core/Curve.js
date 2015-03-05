@@ -31,7 +31,7 @@
  **/
 
 /**************************************************************
- *	Abstract Curve base class
+ *    Abstract Curve base class
  **************************************************************/
 
 THREE.Curve = function () {
@@ -41,56 +41,56 @@ THREE.Curve = function () {
 // Virtual base class method to overwrite and implement in subclasses
 //	- t [0 .. 1]
 
-THREE.Curve.prototype.getPoint = function ( t ) {
+THREE.Curve.prototype.getPoint = function (t) {
 
-	console.log( "Warning, getPoint() not implemented!" );
-	return null;
+    console.log("Warning, getPoint() not implemented!");
+    return null;
 
 };
 
 // Get point at relative position in curve according to arc length
 // - u [0 .. 1]
 
-THREE.Curve.prototype.getPointAt = function ( u ) {
+THREE.Curve.prototype.getPointAt = function (u) {
 
-	var t = this.getUtoTmapping( u );
-	return this.getPoint( t );
+    var t = this.getUtoTmapping(u);
+    return this.getPoint(t);
 
 };
 
 // Get sequence of points using getPoint( t )
 
-THREE.Curve.prototype.getPoints = function ( divisions ) {
+THREE.Curve.prototype.getPoints = function (divisions) {
 
-	if ( ! divisions ) divisions = 5;
+    if (!divisions) divisions = 5;
 
-	var d, pts = [];
+    var d, pts = [];
 
-	for ( d = 0; d <= divisions; d ++ ) {
+    for (d = 0; d <= divisions; d++) {
 
-		pts.push( this.getPoint( d / divisions ) );
+        pts.push(this.getPoint(d / divisions));
 
-	}
+    }
 
-	return pts;
+    return pts;
 
 };
 
 // Get sequence of points using getPointAt( u )
 
-THREE.Curve.prototype.getSpacedPoints = function ( divisions ) {
+THREE.Curve.prototype.getSpacedPoints = function (divisions) {
 
-	if ( ! divisions ) divisions = 5;
+    if (!divisions) divisions = 5;
 
-	var d, pts = [];
+    var d, pts = [];
 
-	for ( d = 0; d <= divisions; d ++ ) {
+    for (d = 0; d <= divisions; d++) {
 
-		pts.push( this.getPointAt( d / divisions ) );
+        pts.push(this.getPointAt(d / divisions));
 
-	}
+    }
 
-	return pts;
+    return pts;
 
 };
 
@@ -98,123 +98,122 @@ THREE.Curve.prototype.getSpacedPoints = function ( divisions ) {
 
 THREE.Curve.prototype.getLength = function () {
 
-	var lengths = this.getLengths();
-	return lengths[ lengths.length - 1 ];
+    var lengths = this.getLengths();
+    return lengths[lengths.length - 1];
 
 };
 
 // Get list of cumulative segment lengths
 
-THREE.Curve.prototype.getLengths = function ( divisions ) {
+THREE.Curve.prototype.getLengths = function (divisions) {
 
-	if ( ! divisions ) divisions = (this.__arcLengthDivisions) ? (this.__arcLengthDivisions): 200;
+    if (!divisions) divisions = (this.__arcLengthDivisions) ? (this.__arcLengthDivisions) : 200;
 
-	if ( this.cacheArcLengths
-		&& ( this.cacheArcLengths.length == divisions + 1 )
-		&& ! this.needsUpdate) {
+    if (this.cacheArcLengths
+        && ( this.cacheArcLengths.length == divisions + 1 )
+        && !this.needsUpdate) {
 
-		//console.log( "cached", this.cacheArcLengths );
-		return this.cacheArcLengths;
+        //console.log( "cached", this.cacheArcLengths );
+        return this.cacheArcLengths;
 
-	}
+    }
 
-	this.needsUpdate = false;
+    this.needsUpdate = false;
 
-	var cache = [];
-	var current, last = this.getPoint( 0 );
-	var p, sum = 0;
+    var cache = [];
+    var current, last = this.getPoint(0);
+    var p, sum = 0;
 
-	cache.push( 0 );
+    cache.push(0);
 
-	for ( p = 1; p <= divisions; p ++ ) {
+    for (p = 1; p <= divisions; p++) {
 
-		current = this.getPoint ( p / divisions );
-		sum += current.distanceTo( last );
-		cache.push( sum );
-		last = current;
+        current = this.getPoint(p / divisions);
+        sum += current.distanceTo(last);
+        cache.push(sum);
+        last = current;
 
-	}
+    }
 
-	this.cacheArcLengths = cache;
+    this.cacheArcLengths = cache;
 
-	return cache; // { sums: cache, sum:sum }; Sum is in the last element.
+    return cache; // { sums: cache, sum:sum }; Sum is in the last element.
 
 };
 
-
-THREE.Curve.prototype.updateArcLengths = function() {
-	this.needsUpdate = true;
-	this.getLengths();
+THREE.Curve.prototype.updateArcLengths = function () {
+    this.needsUpdate = true;
+    this.getLengths();
 };
 
 // Given u ( 0 .. 1 ), get a t to find p. This gives you points which are equi distance
 
-THREE.Curve.prototype.getUtoTmapping = function ( u, distance ) {
+THREE.Curve.prototype.getUtoTmapping = function (u, distance) {
 
-	var arcLengths = this.getLengths();
+    var arcLengths = this.getLengths();
 
-	var i = 0, il = arcLengths.length;
+    var i = 0, il = arcLengths.length;
 
-	var targetArcLength; // The targeted u distance value to get
+    var targetArcLength; // The targeted u distance value to get
 
-	if ( distance ) {
+    if (distance) {
 
-		targetArcLength = distance;
+        targetArcLength = distance;
 
-	} else {
+    } else {
 
-		targetArcLength = u * arcLengths[ il - 1 ];
+        targetArcLength = u * arcLengths[il - 1];
 
-	}
+    }
 
-	//var time = Date.now();
+    //var time = Date.now();
 
-	// binary search for the index with largest value smaller than target u distance
+    // binary search for the index with largest value smaller than target u distance
 
-	var low = 0, high = il - 1, comparison;
+    var low = 0, high = il - 1, comparison;
 
-	while ( low <= high ) {
+    while (low <= high) {
 
-		i = Math.floor( low + ( high - low ) / 2 ); // less likely to overflow, though probably not issue here, JS doesn't really have integers, all numbers are floats
+        i = Math.floor(low + ( high - low ) / 2); // less likely to overflow, though probably not issue here, JS doesn't really have integers, all numbers are floats
 
-		comparison = arcLengths[ i ] - targetArcLength;
+        comparison = arcLengths[i] - targetArcLength;
 
-		if ( comparison < 0 ) {
+        if (comparison < 0) {
 
-			low = i + 1;
-			continue;
+            low = i + 1;
+            continue;
 
-		} else if ( comparison > 0 ) {
+        } else if (comparison > 0) {
 
-			high = i - 1;
-			continue;
+            high = i - 1;
+            continue;
 
-		} else {
+        } else {
 
-			high = i;
-			break;
+            high = i;
+            break;
 
-			// DONE
+            // DONE
 
-		}
+        }
 
-	}
+    }
 
-	i = high;
+    i = high;
 
-	//console.log('b' , i, low, high, Date.now()- time);
+    //console.log('b' , i, low, high, Date.now()- time);
 
-	if ( arcLengths[ i ] == targetArcLength ) {
+    if (arcLengths[i] == targetArcLength) {
 
-		var t = i / ( il - 1 );
-		return t;
+        var t = i / ( il - 1 );
+        return t;
 
-	}
+    }
 
-	// we could get finer grain at lengths, or use simple interpolatation between two points
+    // we could get finer grain at lengths, or use simple interpolatation between two points
 
-	var lengthBefore = arcLengths[ i ];
-    var lengthAfter = arcLengths[ i + 1 ];
+    var lengthBefore = arcLengths[i];
+    var lengthAfter = arcLengths[i + 1];
 
     var segmentLength = lengthAfter - lengthBefore;
 
@@ -224,9 +223,9 @@ THREE.Curve.prototype.getUtoTmapping = function ( u, distance ) {
 
     // add that fractional amount to t
 
-    var t = ( i + segmentFraction ) / ( il -1 );
+    var t = ( i + segmentFraction ) / ( il - 1 );
 
-	return t;
+    return t;
 
 };
 
@@ -235,102 +234,96 @@ THREE.Curve.prototype.getUtoTmapping = function ( u, distance ) {
 // 2 points a small delta apart will be used to find its gradient
 // which seems to give a reasonable approximation
 
-THREE.Curve.prototype.getTangent = function( t ) {
+THREE.Curve.prototype.getTangent = function (t) {
 
-	var delta = 0.0001;
-	var t1 = t - delta;
-	var t2 = t + delta;
+    var delta = 0.0001;
+    var t1 = t - delta;
+    var t2 = t + delta;
 
-	// Capping in case of danger
+    // Capping in case of danger
 
-	if ( t1 < 0 ) t1 = 0;
-	if ( t2 > 1 ) t2 = 1;
+    if (t1 < 0) t1 = 0;
+    if (t2 > 1) t2 = 1;
 
-	var pt1 = this.getPoint( t1 );
-	var pt2 = this.getPoint( t2 );
+    var pt1 = this.getPoint(t1);
+    var pt2 = this.getPoint(t2);
 
-	var vec = pt2.clone().sub(pt1);
-	return vec.normalize();
-
-};
-
-
-THREE.Curve.prototype.getTangentAt = function ( u ) {
-
-	var t = this.getUtoTmapping( u );
-	return this.getTangent( t );
+    var vec = pt2.clone().sub(pt1);
+    return vec.normalize();
 
 };
 
+THREE.Curve.prototype.getTangentAt = function (u) {
 
+    var t = this.getUtoTmapping(u);
+    return this.getTangent(t);
 
-
+};
 
 /**************************************************************
- *	Utils
+ *    Utils
  **************************************************************/
 
 THREE.Curve.Utils = {
 
-	tangentQuadraticBezier: function ( t, p0, p1, p2 ) {
+    tangentQuadraticBezier: function (t, p0, p1, p2) {
 
-		return 2 * ( 1 - t ) * ( p1 - p0 ) + 2 * t * ( p2 - p1 );
+        return 2 * ( 1 - t ) * ( p1 - p0 ) + 2 * t * ( p2 - p1 );
 
-	},
+    },
 
-	// Puay Bing, thanks for helping with this derivative!
+    // Puay Bing, thanks for helping with this derivative!
 
-	tangentCubicBezier: function (t, p0, p1, p2, p3 ) {
+    tangentCubicBezier: function (t, p0, p1, p2, p3) {
 
-		return - 3 * p0 * (1 - t) * (1 - t)  +
-			3 * p1 * (1 - t) * (1-t) - 6 *t *p1 * (1-t) +
-			6 * t *  p2 * (1-t) - 3 * t * t * p2 +
-			3 * t * t * p3;
+        return -3 * p0 * (1 - t) * (1 - t) +
+            3 * p1 * (1 - t) * (1 - t) - 6 * t * p1 * (1 - t) +
+            6 * t * p2 * (1 - t) - 3 * t * t * p2 +
+            3 * t * t * p3;
 
-	},
+    },
 
-	tangentSpline: function ( t, p0, p1, p2, p3 ) {
+    tangentSpline: function (t, p0, p1, p2, p3) {
 
-		// To check if my formulas are correct
+        // To check if my formulas are correct
 
-		var h00 = 6 * t * t - 6 * t; 	// derived from 2t^3 − 3t^2 + 1
-		var h10 = 3 * t * t - 4 * t + 1; // t^3 − 2t^2 + t
-		var h01 = - 6 * t * t + 6 * t; 	// − 2t3 + 3t2
-		var h11 = 3 * t * t - 2 * t;	// t3 − t2
+        var h00 = 6 * t * t - 6 * t; 	// derived from 2t^3 − 3t^2 + 1
+        var h10 = 3 * t * t - 4 * t + 1; // t^3 − 2t^2 + t
+        var h01 = -6 * t * t + 6 * t; 	// − 2t3 + 3t2
+        var h11 = 3 * t * t - 2 * t;	// t3 − t2
 
-		return h00 + h10 + h01 + h11;
+        return h00 + h10 + h01 + h11;
 
-	},
+    },
 
-	// Catmull-Rom
+    // Catmull-Rom
 
-	interpolate: function( p0, p1, p2, p3, t ) {
+    interpolate: function (p0, p1, p2, p3, t) {
 
-		var v0 = ( p2 - p0 ) * 0.5;
-		var v1 = ( p3 - p1 ) * 0.5;
-		var t2 = t * t;
-		var t3 = t * t2;
-		return ( 2 * p1 - 2 * p2 + v0 + v1 ) * t3 + ( - 3 * p1 + 3 * p2 - 2 * v0 - v1 ) * t2 + v0 * t + p1;
+        var v0 = ( p2 - p0 ) * 0.5;
+        var v1 = ( p3 - p1 ) * 0.5;
+        var t2 = t * t;
+        var t3 = t * t2;
+        return ( 2 * p1 - 2 * p2 + v0 + v1 ) * t3 + ( -3 * p1 + 3 * p2 - 2 * v0 - v1 ) * t2 + v0 * t + p1;
 
-	}
+    }
 
 };
-
 
 // TODO: Transformation for Curves?
 
 /**************************************************************
- *	3D Curves
+ *    3D Curves
  **************************************************************/
 
-// A Factory method for creating new curve subclasses
+    // A Factory method for creating new curve subclasses
 
-THREE.Curve.create = function ( constructor, getPointFunc ) {
+THREE.Curve.create = function (constructor, getPointFunc) {
 
-	constructor.prototype = Object.create( THREE.Curve.prototype );
-	constructor.prototype.constructor = constructor;
-	constructor.prototype.getPoint = getPointFunc;
+    constructor.prototype = Object.create(THREE.Curve.prototype);
+    constructor.prototype.constructor = constructor;
+    constructor.prototype.getPoint = getPointFunc;
 
-	return constructor;
+    return constructor;
 
 };

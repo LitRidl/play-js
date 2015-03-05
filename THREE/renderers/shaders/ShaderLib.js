@@ -9,758 +9,762 @@
 
 THREE.ShaderLib = {
 
-	'basic': {
+    'basic': {
 
-		uniforms: THREE.UniformsUtils.merge( [
+        uniforms: THREE.UniformsUtils.merge([
 
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "fog" ],
-			THREE.UniformsLib[ "shadowmap" ]
+            THREE.UniformsLib["common"],
+            THREE.UniformsLib["fog"],
+            THREE.UniformsLib["shadowmap"]
 
-		] ),
+        ]),
 
-		vertexShader: [
+        vertexShader: [
 
-			THREE.ShaderChunk[ "map_pars_vertex" ],
-			THREE.ShaderChunk[ "lightmap_pars_vertex" ],
-			THREE.ShaderChunk[ "envmap_pars_vertex" ],
-			THREE.ShaderChunk[ "color_pars_vertex" ],
-			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			THREE.ShaderChunk[ "skinning_pars_vertex" ],
-			THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["map_pars_vertex"],
+            THREE.ShaderChunk["lightmap_pars_vertex"],
+            THREE.ShaderChunk["envmap_pars_vertex"],
+            THREE.ShaderChunk["color_pars_vertex"],
+            THREE.ShaderChunk["morphtarget_pars_vertex"],
+            THREE.ShaderChunk["skinning_pars_vertex"],
+            THREE.ShaderChunk["shadowmap_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "map_vertex" ],
-				THREE.ShaderChunk[ "lightmap_vertex" ],
-				THREE.ShaderChunk[ "color_vertex" ],
-				THREE.ShaderChunk[ "skinbase_vertex" ],
+            THREE.ShaderChunk["map_vertex"],
+            THREE.ShaderChunk["lightmap_vertex"],
+            THREE.ShaderChunk["color_vertex"],
+            THREE.ShaderChunk["skinbase_vertex"],
 
-			"	#ifdef USE_ENVMAP",
+            "	#ifdef USE_ENVMAP",
 
-				THREE.ShaderChunk[ "morphnormal_vertex" ],
-				THREE.ShaderChunk[ "skinnormal_vertex" ],
-				THREE.ShaderChunk[ "defaultnormal_vertex" ],
+            THREE.ShaderChunk["morphnormal_vertex"],
+            THREE.ShaderChunk["skinnormal_vertex"],
+            THREE.ShaderChunk["defaultnormal_vertex"],
 
-			"	#endif",
+            "	#endif",
 
-				THREE.ShaderChunk[ "morphtarget_vertex" ],
-				THREE.ShaderChunk[ "skinning_vertex" ],
-				THREE.ShaderChunk[ "default_vertex" ],
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["morphtarget_vertex"],
+            THREE.ShaderChunk["skinning_vertex"],
+            THREE.ShaderChunk["default_vertex"],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-				THREE.ShaderChunk[ "worldpos_vertex" ],
-				THREE.ShaderChunk[ "envmap_vertex" ],
-				THREE.ShaderChunk[ "shadowmap_vertex" ],
+            THREE.ShaderChunk["worldpos_vertex"],
+            THREE.ShaderChunk["envmap_vertex"],
+            THREE.ShaderChunk["shadowmap_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform vec3 diffuse;",
-			"uniform float opacity;",
+            "uniform vec3 diffuse;",
+            "uniform float opacity;",
 
-			THREE.ShaderChunk[ "color_pars_fragment" ],
-			THREE.ShaderChunk[ "map_pars_fragment" ],
-			THREE.ShaderChunk[ "alphamap_pars_fragment" ],
-			THREE.ShaderChunk[ "lightmap_pars_fragment" ],
-			THREE.ShaderChunk[ "envmap_pars_fragment" ],
-			THREE.ShaderChunk[ "fog_pars_fragment" ],
-			THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-			THREE.ShaderChunk[ "specularmap_pars_fragment" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["color_pars_fragment"],
+            THREE.ShaderChunk["map_pars_fragment"],
+            THREE.ShaderChunk["alphamap_pars_fragment"],
+            THREE.ShaderChunk["lightmap_pars_fragment"],
+            THREE.ShaderChunk["envmap_pars_fragment"],
+            THREE.ShaderChunk["fog_pars_fragment"],
+            THREE.ShaderChunk["shadowmap_pars_fragment"],
+            THREE.ShaderChunk["specularmap_pars_fragment"],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-			"	gl_FragColor = vec4( diffuse, opacity );",
+            "	gl_FragColor = vec4( diffuse, opacity );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-				THREE.ShaderChunk[ "map_fragment" ],
-				THREE.ShaderChunk[ "alphamap_fragment" ],
-				THREE.ShaderChunk[ "alphatest_fragment" ],
-				THREE.ShaderChunk[ "specularmap_fragment" ],
-				THREE.ShaderChunk[ "lightmap_fragment" ],
-				THREE.ShaderChunk[ "color_fragment" ],
-				THREE.ShaderChunk[ "envmap_fragment" ],
-				THREE.ShaderChunk[ "shadowmap_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
+            THREE.ShaderChunk["map_fragment"],
+            THREE.ShaderChunk["alphamap_fragment"],
+            THREE.ShaderChunk["alphatest_fragment"],
+            THREE.ShaderChunk["specularmap_fragment"],
+            THREE.ShaderChunk["lightmap_fragment"],
+            THREE.ShaderChunk["color_fragment"],
+            THREE.ShaderChunk["envmap_fragment"],
+            THREE.ShaderChunk["shadowmap_fragment"],
 
-				THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
+            THREE.ShaderChunk["linear_to_gamma_fragment"],
 
-				THREE.ShaderChunk[ "fog_fragment" ],
+            THREE.ShaderChunk["fog_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	'lambert': {
+    'lambert': {
 
-		uniforms: THREE.UniformsUtils.merge( [
+        uniforms: THREE.UniformsUtils.merge([
 
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "fog" ],
-			THREE.UniformsLib[ "lights" ],
-			THREE.UniformsLib[ "shadowmap" ],
+            THREE.UniformsLib["common"],
+            THREE.UniformsLib["fog"],
+            THREE.UniformsLib["lights"],
+            THREE.UniformsLib["shadowmap"],
 
-			{
-				"ambient"  : { type: "c", value: new THREE.Color( 0xffffff ) },
-				"emissive" : { type: "c", value: new THREE.Color( 0x000000 ) },
-				"wrapRGB"  : { type: "v3", value: new THREE.Vector3( 1, 1, 1 ) }
-			}
+            {
+                "ambient": { type: "c", value: new THREE.Color(0xffffff) },
+                "emissive": { type: "c", value: new THREE.Color(0x000000) },
+                "wrapRGB": { type: "v3", value: new THREE.Vector3(1, 1, 1) }
+            }
 
-		] ),
+        ]),
 
-		vertexShader: [
+        vertexShader: [
 
-			"#define LAMBERT",
+            "#define LAMBERT",
 
-			"varying vec3 vLightFront;",
+            "varying vec3 vLightFront;",
 
-			"#ifdef DOUBLE_SIDED",
+            "#ifdef DOUBLE_SIDED",
 
-			"	varying vec3 vLightBack;",
+            "	varying vec3 vLightBack;",
 
-			"#endif",
+            "#endif",
 
-			THREE.ShaderChunk[ "map_pars_vertex" ],
-			THREE.ShaderChunk[ "lightmap_pars_vertex" ],
-			THREE.ShaderChunk[ "envmap_pars_vertex" ],
-			THREE.ShaderChunk[ "lights_lambert_pars_vertex" ],
-			THREE.ShaderChunk[ "color_pars_vertex" ],
-			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			THREE.ShaderChunk[ "skinning_pars_vertex" ],
-			THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["map_pars_vertex"],
+            THREE.ShaderChunk["lightmap_pars_vertex"],
+            THREE.ShaderChunk["envmap_pars_vertex"],
+            THREE.ShaderChunk["lights_lambert_pars_vertex"],
+            THREE.ShaderChunk["color_pars_vertex"],
+            THREE.ShaderChunk["morphtarget_pars_vertex"],
+            THREE.ShaderChunk["skinning_pars_vertex"],
+            THREE.ShaderChunk["shadowmap_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "map_vertex" ],
-				THREE.ShaderChunk[ "lightmap_vertex" ],
-				THREE.ShaderChunk[ "color_vertex" ],
+            THREE.ShaderChunk["map_vertex"],
+            THREE.ShaderChunk["lightmap_vertex"],
+            THREE.ShaderChunk["color_vertex"],
 
-				THREE.ShaderChunk[ "morphnormal_vertex" ],
-				THREE.ShaderChunk[ "skinbase_vertex" ],
-				THREE.ShaderChunk[ "skinnormal_vertex" ],
-				THREE.ShaderChunk[ "defaultnormal_vertex" ],
+            THREE.ShaderChunk["morphnormal_vertex"],
+            THREE.ShaderChunk["skinbase_vertex"],
+            THREE.ShaderChunk["skinnormal_vertex"],
+            THREE.ShaderChunk["defaultnormal_vertex"],
 
-				THREE.ShaderChunk[ "morphtarget_vertex" ],
-				THREE.ShaderChunk[ "skinning_vertex" ],
-				THREE.ShaderChunk[ "default_vertex" ],
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["morphtarget_vertex"],
+            THREE.ShaderChunk["skinning_vertex"],
+            THREE.ShaderChunk["default_vertex"],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-				THREE.ShaderChunk[ "worldpos_vertex" ],
-				THREE.ShaderChunk[ "envmap_vertex" ],
-				THREE.ShaderChunk[ "lights_lambert_vertex" ],
-				THREE.ShaderChunk[ "shadowmap_vertex" ],
+            THREE.ShaderChunk["worldpos_vertex"],
+            THREE.ShaderChunk["envmap_vertex"],
+            THREE.ShaderChunk["lights_lambert_vertex"],
+            THREE.ShaderChunk["shadowmap_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform float opacity;",
+            "uniform float opacity;",
 
-			"varying vec3 vLightFront;",
+            "varying vec3 vLightFront;",
 
-			"#ifdef DOUBLE_SIDED",
+            "#ifdef DOUBLE_SIDED",
 
-			"	varying vec3 vLightBack;",
+            "	varying vec3 vLightBack;",
 
-			"#endif",
+            "#endif",
 
-			THREE.ShaderChunk[ "color_pars_fragment" ],
-			THREE.ShaderChunk[ "map_pars_fragment" ],
-			THREE.ShaderChunk[ "alphamap_pars_fragment" ],
-			THREE.ShaderChunk[ "lightmap_pars_fragment" ],
-			THREE.ShaderChunk[ "envmap_pars_fragment" ],
-			THREE.ShaderChunk[ "fog_pars_fragment" ],
-			THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-			THREE.ShaderChunk[ "specularmap_pars_fragment" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["color_pars_fragment"],
+            THREE.ShaderChunk["map_pars_fragment"],
+            THREE.ShaderChunk["alphamap_pars_fragment"],
+            THREE.ShaderChunk["lightmap_pars_fragment"],
+            THREE.ShaderChunk["envmap_pars_fragment"],
+            THREE.ShaderChunk["fog_pars_fragment"],
+            THREE.ShaderChunk["shadowmap_pars_fragment"],
+            THREE.ShaderChunk["specularmap_pars_fragment"],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-			"	gl_FragColor = vec4( vec3( 1.0 ), opacity );",
+            "	gl_FragColor = vec4( vec3( 1.0 ), opacity );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-				THREE.ShaderChunk[ "map_fragment" ],
-				THREE.ShaderChunk[ "alphamap_fragment" ],
-				THREE.ShaderChunk[ "alphatest_fragment" ],
-				THREE.ShaderChunk[ "specularmap_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
+            THREE.ShaderChunk["map_fragment"],
+            THREE.ShaderChunk["alphamap_fragment"],
+            THREE.ShaderChunk["alphatest_fragment"],
+            THREE.ShaderChunk["specularmap_fragment"],
 
-			"	#ifdef DOUBLE_SIDED",
+            "	#ifdef DOUBLE_SIDED",
 
-					//"float isFront = float( gl_FrontFacing );",
-					//"gl_FragColor.xyz *= isFront * vLightFront + ( 1.0 - isFront ) * vLightBack;",
+            //"float isFront = float( gl_FrontFacing );",
+            //"gl_FragColor.xyz *= isFront * vLightFront + ( 1.0 - isFront ) * vLightBack;",
 
-			"		if ( gl_FrontFacing )",
-			"			gl_FragColor.xyz *= vLightFront;",
-			"		else",
-			"			gl_FragColor.xyz *= vLightBack;",
+            "		if ( gl_FrontFacing )",
+            "			gl_FragColor.xyz *= vLightFront;",
+            "		else",
+            "			gl_FragColor.xyz *= vLightBack;",
 
-			"	#else",
+            "	#else",
 
-			"		gl_FragColor.xyz *= vLightFront;",
+            "		gl_FragColor.xyz *= vLightFront;",
 
-			"	#endif",
+            "	#endif",
 
-				THREE.ShaderChunk[ "lightmap_fragment" ],
-				THREE.ShaderChunk[ "color_fragment" ],
-				THREE.ShaderChunk[ "envmap_fragment" ],
-				THREE.ShaderChunk[ "shadowmap_fragment" ],
+            THREE.ShaderChunk["lightmap_fragment"],
+            THREE.ShaderChunk["color_fragment"],
+            THREE.ShaderChunk["envmap_fragment"],
+            THREE.ShaderChunk["shadowmap_fragment"],
 
-				THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
+            THREE.ShaderChunk["linear_to_gamma_fragment"],
 
-				THREE.ShaderChunk[ "fog_fragment" ],
+            THREE.ShaderChunk["fog_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	'phong': {
+    'phong': {
 
-		uniforms: THREE.UniformsUtils.merge( [
+        uniforms: THREE.UniformsUtils.merge([
 
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "bump" ],
-			THREE.UniformsLib[ "normalmap" ],
-			THREE.UniformsLib[ "fog" ],
-			THREE.UniformsLib[ "lights" ],
-			THREE.UniformsLib[ "shadowmap" ],
+            THREE.UniformsLib["common"],
+            THREE.UniformsLib["bump"],
+            THREE.UniformsLib["normalmap"],
+            THREE.UniformsLib["fog"],
+            THREE.UniformsLib["lights"],
+            THREE.UniformsLib["shadowmap"],
 
-			{
-				"ambient"  : { type: "c", value: new THREE.Color( 0xffffff ) },
-				"emissive" : { type: "c", value: new THREE.Color( 0x000000 ) },
-				"specular" : { type: "c", value: new THREE.Color( 0x111111 ) },
-				"shininess": { type: "f", value: 30 },
-				"wrapRGB"  : { type: "v3", value: new THREE.Vector3( 1, 1, 1 ) }
-			}
+            {
+                "ambient": { type: "c", value: new THREE.Color(0xffffff) },
+                "emissive": { type: "c", value: new THREE.Color(0x000000) },
+                "specular": { type: "c", value: new THREE.Color(0x111111) },
+                "shininess": { type: "f", value: 30 },
+                "wrapRGB": { type: "v3", value: new THREE.Vector3(1, 1, 1) }
+            }
 
-		] ),
+        ]),
 
-		vertexShader: [
+        vertexShader: [
 
-			"#define PHONG",
+            "#define PHONG",
 
-			"varying vec3 vViewPosition;",
-			"varying vec3 vNormal;",
+            "varying vec3 vViewPosition;",
+            "varying vec3 vNormal;",
 
-			THREE.ShaderChunk[ "map_pars_vertex" ],
-			THREE.ShaderChunk[ "lightmap_pars_vertex" ],
-			THREE.ShaderChunk[ "envmap_pars_vertex" ],
-			THREE.ShaderChunk[ "lights_phong_pars_vertex" ],
-			THREE.ShaderChunk[ "color_pars_vertex" ],
-			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			THREE.ShaderChunk[ "skinning_pars_vertex" ],
-			THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["map_pars_vertex"],
+            THREE.ShaderChunk["lightmap_pars_vertex"],
+            THREE.ShaderChunk["envmap_pars_vertex"],
+            THREE.ShaderChunk["lights_phong_pars_vertex"],
+            THREE.ShaderChunk["color_pars_vertex"],
+            THREE.ShaderChunk["morphtarget_pars_vertex"],
+            THREE.ShaderChunk["skinning_pars_vertex"],
+            THREE.ShaderChunk["shadowmap_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "map_vertex" ],
-				THREE.ShaderChunk[ "lightmap_vertex" ],
-				THREE.ShaderChunk[ "color_vertex" ],
+            THREE.ShaderChunk["map_vertex"],
+            THREE.ShaderChunk["lightmap_vertex"],
+            THREE.ShaderChunk["color_vertex"],
 
-				THREE.ShaderChunk[ "morphnormal_vertex" ],
-				THREE.ShaderChunk[ "skinbase_vertex" ],
-				THREE.ShaderChunk[ "skinnormal_vertex" ],
-				THREE.ShaderChunk[ "defaultnormal_vertex" ],
+            THREE.ShaderChunk["morphnormal_vertex"],
+            THREE.ShaderChunk["skinbase_vertex"],
+            THREE.ShaderChunk["skinnormal_vertex"],
+            THREE.ShaderChunk["defaultnormal_vertex"],
 
-			"	vNormal = normalize( transformedNormal );",
+            "	vNormal = normalize( transformedNormal );",
 
-				THREE.ShaderChunk[ "morphtarget_vertex" ],
-				THREE.ShaderChunk[ "skinning_vertex" ],
-				THREE.ShaderChunk[ "default_vertex" ],
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["morphtarget_vertex"],
+            THREE.ShaderChunk["skinning_vertex"],
+            THREE.ShaderChunk["default_vertex"],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-			"	vViewPosition = -mvPosition.xyz;",
+            "	vViewPosition = -mvPosition.xyz;",
 
-				THREE.ShaderChunk[ "worldpos_vertex" ],
-				THREE.ShaderChunk[ "envmap_vertex" ],
-				THREE.ShaderChunk[ "lights_phong_vertex" ],
-				THREE.ShaderChunk[ "shadowmap_vertex" ],
+            THREE.ShaderChunk["worldpos_vertex"],
+            THREE.ShaderChunk["envmap_vertex"],
+            THREE.ShaderChunk["lights_phong_vertex"],
+            THREE.ShaderChunk["shadowmap_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"#define PHONG",
+            "#define PHONG",
 
-			"uniform vec3 diffuse;",
-			"uniform float opacity;",
+            "uniform vec3 diffuse;",
+            "uniform float opacity;",
 
-			"uniform vec3 ambient;",
-			"uniform vec3 emissive;",
-			"uniform vec3 specular;",
-			"uniform float shininess;",
+            "uniform vec3 ambient;",
+            "uniform vec3 emissive;",
+            "uniform vec3 specular;",
+            "uniform float shininess;",
 
-			THREE.ShaderChunk[ "color_pars_fragment" ],
-			THREE.ShaderChunk[ "map_pars_fragment" ],
-			THREE.ShaderChunk[ "alphamap_pars_fragment" ],
-			THREE.ShaderChunk[ "lightmap_pars_fragment" ],
-			THREE.ShaderChunk[ "envmap_pars_fragment" ],
-			THREE.ShaderChunk[ "fog_pars_fragment" ],
-			THREE.ShaderChunk[ "lights_phong_pars_fragment" ],
-			THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-			THREE.ShaderChunk[ "bumpmap_pars_fragment" ],
-			THREE.ShaderChunk[ "normalmap_pars_fragment" ],
-			THREE.ShaderChunk[ "specularmap_pars_fragment" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["color_pars_fragment"],
+            THREE.ShaderChunk["map_pars_fragment"],
+            THREE.ShaderChunk["alphamap_pars_fragment"],
+            THREE.ShaderChunk["lightmap_pars_fragment"],
+            THREE.ShaderChunk["envmap_pars_fragment"],
+            THREE.ShaderChunk["fog_pars_fragment"],
+            THREE.ShaderChunk["lights_phong_pars_fragment"],
+            THREE.ShaderChunk["shadowmap_pars_fragment"],
+            THREE.ShaderChunk["bumpmap_pars_fragment"],
+            THREE.ShaderChunk["normalmap_pars_fragment"],
+            THREE.ShaderChunk["specularmap_pars_fragment"],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-			"	gl_FragColor = vec4( vec3( 1.0 ), opacity );",
+            "	gl_FragColor = vec4( vec3( 1.0 ), opacity );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-				THREE.ShaderChunk[ "map_fragment" ],
-				THREE.ShaderChunk[ "alphamap_fragment" ],
-				THREE.ShaderChunk[ "alphatest_fragment" ],
-				THREE.ShaderChunk[ "specularmap_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
+            THREE.ShaderChunk["map_fragment"],
+            THREE.ShaderChunk["alphamap_fragment"],
+            THREE.ShaderChunk["alphatest_fragment"],
+            THREE.ShaderChunk["specularmap_fragment"],
 
-				THREE.ShaderChunk[ "lights_phong_fragment" ],
+            THREE.ShaderChunk["lights_phong_fragment"],
 
-				THREE.ShaderChunk[ "lightmap_fragment" ],
-				THREE.ShaderChunk[ "color_fragment" ],
-				THREE.ShaderChunk[ "envmap_fragment" ],
-				THREE.ShaderChunk[ "shadowmap_fragment" ],
+            THREE.ShaderChunk["lightmap_fragment"],
+            THREE.ShaderChunk["color_fragment"],
+            THREE.ShaderChunk["envmap_fragment"],
+            THREE.ShaderChunk["shadowmap_fragment"],
 
-				THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
+            THREE.ShaderChunk["linear_to_gamma_fragment"],
 
-				THREE.ShaderChunk[ "fog_fragment" ],
+            THREE.ShaderChunk["fog_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	'particle_basic': {
+    'particle_basic': {
 
-		uniforms: THREE.UniformsUtils.merge( [
+        uniforms: THREE.UniformsUtils.merge([
 
-			THREE.UniformsLib[ "particle" ],
-			THREE.UniformsLib[ "shadowmap" ]
+            THREE.UniformsLib["particle"],
+            THREE.UniformsLib["shadowmap"]
 
-		] ),
+        ]),
 
-		vertexShader: [
+        vertexShader: [
 
-			"uniform float size;",
-			"uniform float scale;",
+            "uniform float size;",
+            "uniform float scale;",
 
-			THREE.ShaderChunk[ "color_pars_vertex" ],
-			THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["color_pars_vertex"],
+            THREE.ShaderChunk["shadowmap_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "color_vertex" ],
+            THREE.ShaderChunk["color_vertex"],
 
-			"	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+            "	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
 
-			"	#ifdef USE_SIZEATTENUATION",
-			"		gl_PointSize = size * ( scale / length( mvPosition.xyz ) );",
-			"	#else",
-			"		gl_PointSize = size;",
-			"	#endif",
+            "	#ifdef USE_SIZEATTENUATION",
+            "		gl_PointSize = size * ( scale / length( mvPosition.xyz ) );",
+            "	#else",
+            "		gl_PointSize = size;",
+            "	#endif",
 
-			"	gl_Position = projectionMatrix * mvPosition;",
+            "	gl_Position = projectionMatrix * mvPosition;",
 
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
-				THREE.ShaderChunk[ "worldpos_vertex" ],
-				THREE.ShaderChunk[ "shadowmap_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
+            THREE.ShaderChunk["worldpos_vertex"],
+            THREE.ShaderChunk["shadowmap_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform vec3 psColor;",
-			"uniform float opacity;",
+            "uniform vec3 psColor;",
+            "uniform float opacity;",
 
-			THREE.ShaderChunk[ "color_pars_fragment" ],
-			THREE.ShaderChunk[ "map_particle_pars_fragment" ],
-			THREE.ShaderChunk[ "fog_pars_fragment" ],
-			THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["color_pars_fragment"],
+            THREE.ShaderChunk["map_particle_pars_fragment"],
+            THREE.ShaderChunk["fog_pars_fragment"],
+            THREE.ShaderChunk["shadowmap_pars_fragment"],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-			"	gl_FragColor = vec4( psColor, opacity );",
+            "	gl_FragColor = vec4( psColor, opacity );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-				THREE.ShaderChunk[ "map_particle_fragment" ],
-				THREE.ShaderChunk[ "alphatest_fragment" ],
-				THREE.ShaderChunk[ "color_fragment" ],
-				THREE.ShaderChunk[ "shadowmap_fragment" ],
-				THREE.ShaderChunk[ "fog_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
+            THREE.ShaderChunk["map_particle_fragment"],
+            THREE.ShaderChunk["alphatest_fragment"],
+            THREE.ShaderChunk["color_fragment"],
+            THREE.ShaderChunk["shadowmap_fragment"],
+            THREE.ShaderChunk["fog_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	'dashed': {
+    'dashed': {
 
-		uniforms: THREE.UniformsUtils.merge( [
+        uniforms: THREE.UniformsUtils.merge([
 
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "fog" ],
+            THREE.UniformsLib["common"],
+            THREE.UniformsLib["fog"],
 
-			{
-				"scale"    : { type: "f", value: 1 },
-				"dashSize" : { type: "f", value: 1 },
-				"totalSize": { type: "f", value: 2 }
-			}
+            {
+                "scale": { type: "f", value: 1 },
+                "dashSize": { type: "f", value: 1 },
+                "totalSize": { type: "f", value: 2 }
+            }
 
-		] ),
+        ]),
 
-		vertexShader: [
+        vertexShader: [
 
-			"uniform float scale;",
-			"attribute float lineDistance;",
+            "uniform float scale;",
+            "attribute float lineDistance;",
 
-			"varying float vLineDistance;",
+            "varying float vLineDistance;",
 
-			THREE.ShaderChunk[ "color_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["color_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "color_vertex" ],
+            THREE.ShaderChunk["color_vertex"],
 
-			"	vLineDistance = scale * lineDistance;",
+            "	vLineDistance = scale * lineDistance;",
 
-			"	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
-			"	gl_Position = projectionMatrix * mvPosition;",
+            "	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+            "	gl_Position = projectionMatrix * mvPosition;",
 
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform vec3 diffuse;",
-			"uniform float opacity;",
+            "uniform vec3 diffuse;",
+            "uniform float opacity;",
 
-			"uniform float dashSize;",
-			"uniform float totalSize;",
+            "uniform float dashSize;",
+            "uniform float totalSize;",
 
-			"varying float vLineDistance;",
+            "varying float vLineDistance;",
 
-			THREE.ShaderChunk[ "color_pars_fragment" ],
-			THREE.ShaderChunk[ "fog_pars_fragment" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["color_pars_fragment"],
+            THREE.ShaderChunk["fog_pars_fragment"],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-			"	if ( mod( vLineDistance, totalSize ) > dashSize ) {",
+            "	if ( mod( vLineDistance, totalSize ) > dashSize ) {",
 
-			"		discard;",
+            "		discard;",
 
-			"	}",
+            "	}",
 
-			"	gl_FragColor = vec4( diffuse, opacity );",
+            "	gl_FragColor = vec4( diffuse, opacity );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-				THREE.ShaderChunk[ "color_fragment" ],
-				THREE.ShaderChunk[ "fog_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
+            THREE.ShaderChunk["color_fragment"],
+            THREE.ShaderChunk["fog_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	'depth': {
+    'depth': {
 
-		uniforms: {
+        uniforms: {
 
-			"mNear": { type: "f", value: 1.0 },
-			"mFar" : { type: "f", value: 2000.0 },
-			"opacity" : { type: "f", value: 1.0 }
+            "mNear": { type: "f", value: 1.0 },
+            "mFar": { type: "f", value: 2000.0 },
+            "opacity": { type: "f", value: 1.0 }
 
-		},
+        },
 
-		vertexShader: [
+        vertexShader: [
 
-			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["morphtarget_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "morphtarget_vertex" ],
-				THREE.ShaderChunk[ "default_vertex" ],
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["morphtarget_vertex"],
+            THREE.ShaderChunk["default_vertex"],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform float mNear;",
-			"uniform float mFar;",
-			"uniform float opacity;",
+            "uniform float mNear;",
+            "uniform float mFar;",
+            "uniform float opacity;",
 
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
 
-			"	#ifdef USE_LOGDEPTHBUF_EXT",
+            "	#ifdef USE_LOGDEPTHBUF_EXT",
 
-			"		float depth = gl_FragDepthEXT / gl_FragCoord.w;",
+            "		float depth = gl_FragDepthEXT / gl_FragCoord.w;",
 
-			"	#else",
+            "	#else",
 
-			"		float depth = gl_FragCoord.z / gl_FragCoord.w;",
+            "		float depth = gl_FragCoord.z / gl_FragCoord.w;",
 
-			"	#endif",
+            "	#endif",
 
-			"	float color = 1.0 - smoothstep( mNear, mFar, depth );",
-			"	gl_FragColor = vec4( vec3( color ), opacity );",
+            "	float color = 1.0 - smoothstep( mNear, mFar, depth );",
+            "	gl_FragColor = vec4( vec3( color ), opacity );",
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	'normal': {
+    'normal': {
 
-		uniforms: {
+        uniforms: {
 
-			"opacity" : { type: "f", value: 1.0 }
+            "opacity": { type: "f", value: 1.0 }
 
-		},
+        },
 
-		vertexShader: [
+        vertexShader: [
 
-			"varying vec3 vNormal;",
+            "varying vec3 vNormal;",
 
-			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["morphtarget_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-			"	vNormal = normalize( normalMatrix * normal );",
+            "	vNormal = normalize( normalMatrix * normal );",
 
-				THREE.ShaderChunk[ "morphtarget_vertex" ],
-				THREE.ShaderChunk[ "default_vertex" ],
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["morphtarget_vertex"],
+            THREE.ShaderChunk["default_vertex"],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform float opacity;",
-			"varying vec3 vNormal;",
+            "uniform float opacity;",
+            "varying vec3 vNormal;",
 
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-			"	gl_FragColor = vec4( 0.5 * normalize( vNormal ) + 0.5, opacity );",
+            "	gl_FragColor = vec4( 0.5 * normalize( vNormal ) + 0.5, opacity );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	/* -------------------------------------------------------------------------
-	//	Cube map shader
-	 ------------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------------
+     //	Cube map shader
+     ------------------------------------------------------------------------- */
 
-	'cube': {
+    'cube': {
 
-		uniforms: { "tCube": { type: "t", value: null },
-					"tFlip": { type: "f", value: - 1 } },
+        uniforms: {
+            "tCube": { type: "t", value: null },
+            "tFlip": { type: "f", value: -1 }
+        },
 
-		vertexShader: [
+        vertexShader: [
 
-			"varying vec3 vWorldPosition;",
+            "varying vec3 vWorldPosition;",
 
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-			"	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
-			"	vWorldPosition = worldPosition.xyz;",
+            "	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
+            "	vWorldPosition = worldPosition.xyz;",
 
-			"	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+            "	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
 
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform samplerCube tCube;",
-			"uniform float tFlip;",
+            "uniform samplerCube tCube;",
+            "uniform float tFlip;",
 
-			"varying vec3 vWorldPosition;",
+            "varying vec3 vWorldPosition;",
 
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-			"	gl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );",
+            "	gl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	/* -------------------------------------------------------------------------
-	//	Cube map shader
-	 ------------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------------
+     //	Cube map shader
+     ------------------------------------------------------------------------- */
 
-	'equirect': {
+    'equirect': {
 
-		uniforms: { "tEquirect": { type: "t", value: null },
-					"tFlip": { type: "f", value: - 1 } },
+        uniforms: {
+            "tEquirect": { type: "t", value: null },
+            "tFlip": { type: "f", value: -1 }
+        },
 
-		vertexShader: [
+        vertexShader: [
 
-			"varying vec3 vWorldPosition;",
+            "varying vec3 vWorldPosition;",
 
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-			"	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
-			"	vWorldPosition = worldPosition.xyz;",
+            "	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
+            "	vWorldPosition = worldPosition.xyz;",
 
-			"	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+            "	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
 
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			"uniform sampler2D tEquirect;",
-			"uniform float tFlip;",
+            "uniform sampler2D tEquirect;",
+            "uniform float tFlip;",
 
-			"varying vec3 vWorldPosition;",
+            "varying vec3 vWorldPosition;",
 
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"void main() {",
+            "void main() {",
 
-				// "	gl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );",
-				"vec3 direction = normalize( vWorldPosition );",
-				"vec2 sampleUV;",
-				"sampleUV.y = clamp( tFlip * direction.y * -0.5 + 0.5, 0.0, 1.0);",
-				"sampleUV.x = atan( direction.z, direction.x ) * 0.15915494309189533576888376337251 + 0.5;", // reciprocal( 2 PI ) + 0.5
-				"gl_FragColor = texture2D( tEquirect, sampleUV );",
+            // "	gl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );",
+            "vec3 direction = normalize( vWorldPosition );",
+            "vec2 sampleUV;",
+            "sampleUV.y = clamp( tFlip * direction.y * -0.5 + 0.5, 0.0, 1.0);",
+            "sampleUV.x = atan( direction.z, direction.x ) * 0.15915494309189533576888376337251 + 0.5;", // reciprocal( 2 PI ) + 0.5
+            "gl_FragColor = texture2D( tEquirect, sampleUV );",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	},
+    },
 
-	/* Depth encoding into RGBA texture
-	 *
-	 * based on SpiderGL shadow map example
-	 * http://spidergl.org/example.php?id=6
-	 *
-	 * originally from
-	 * http://www.gamedev.net/topic/442138-packing-a-float-into-a-a8r8g8b8-texture-shader/page__whichpage__1%25EF%25BF%25BD
-	 *
-	 * see also
-	 * http://aras-p.info/blog/2009/07/30/encoding-floats-to-rgba-the-final/
-	 */
+    /* Depth encoding into RGBA texture
+     *
+     * based on SpiderGL shadow map example
+     * http://spidergl.org/example.php?id=6
+     *
+     * originally from
+     * http://www.gamedev.net/topic/442138-packing-a-float-into-a-a8r8g8b8-texture-shader/page__whichpage__1%25EF%25BF%25BD
+     *
+     * see also
+     * http://aras-p.info/blog/2009/07/30/encoding-floats-to-rgba-the-final/
+     */
 
-	'depthRGBA': {
+    'depthRGBA': {
 
-		uniforms: {},
+        uniforms: {},
 
-		vertexShader: [
+        vertexShader: [
 
-			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			THREE.ShaderChunk[ "skinning_pars_vertex" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["morphtarget_pars_vertex"],
+            THREE.ShaderChunk["skinning_pars_vertex"],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "skinbase_vertex" ],
-				THREE.ShaderChunk[ "morphtarget_vertex" ],
-				THREE.ShaderChunk[ "skinning_vertex" ],
-				THREE.ShaderChunk[ "default_vertex" ],
-				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["skinbase_vertex"],
+            THREE.ShaderChunk["morphtarget_vertex"],
+            THREE.ShaderChunk["skinning_vertex"],
+            THREE.ShaderChunk["default_vertex"],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
 
-			"}"
+            "}"
 
-		].join("\n"),
+        ].join("\n"),
 
-		fragmentShader: [
+        fragmentShader: [
 
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
 
-			"vec4 pack_depth( const in float depth ) {",
+            "vec4 pack_depth( const in float depth ) {",
 
-			"	const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );",
-			"	const vec4 bit_mask = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );",
-			"	vec4 res = mod( depth * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );", // "	vec4 res = fract( depth * bit_shift );",
-			"	res -= res.xxyz * bit_mask;",
-			"	return res;",
+            "	const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );",
+            "	const vec4 bit_mask = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );",
+            "	vec4 res = mod( depth * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );", // "	vec4 res = fract( depth * bit_shift );",
+            "	res -= res.xxyz * bit_mask;",
+            "	return res;",
 
-			"}",
+            "}",
 
-			"void main() {",
+            "void main() {",
 
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
+            THREE.ShaderChunk["logdepthbuf_fragment"],
 
-			"	#ifdef USE_LOGDEPTHBUF_EXT",
+            "	#ifdef USE_LOGDEPTHBUF_EXT",
 
-			"		gl_FragData[ 0 ] = pack_depth( gl_FragDepthEXT );",
+            "		gl_FragData[ 0 ] = pack_depth( gl_FragDepthEXT );",
 
-			"	#else",
+            "	#else",
 
-			"		gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );",
+            "		gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );",
 
-			"	#endif",
+            "	#endif",
 
-				//"gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z / gl_FragCoord.w );",
-				//"float z = ( ( gl_FragCoord.z / gl_FragCoord.w ) - 3.0 ) / ( 4000.0 - 3.0 );",
-				//"gl_FragData[ 0 ] = pack_depth( z );",
-				//"gl_FragData[ 0 ] = vec4( z, z, z, 1.0 );",
+            //"gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z / gl_FragCoord.w );",
+            //"float z = ( ( gl_FragCoord.z / gl_FragCoord.w ) - 3.0 ) / ( 4000.0 - 3.0 );",
+            //"gl_FragData[ 0 ] = pack_depth( z );",
+            //"gl_FragData[ 0 ] = vec4( z, z, z, 1.0 );",
 
-			"}"
+            "}"
 
-		].join("\n")
+        ].join("\n")
 
-	}
+    }
 
 };

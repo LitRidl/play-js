@@ -5,203 +5,203 @@
 
 THREE.Material = function () {
 
-	Object.defineProperty( this, 'id', { value: THREE.MaterialIdCount ++ } );
+    Object.defineProperty(this, 'id', { value: THREE.MaterialIdCount++ });
 
-	this.uuid = THREE.Math.generateUUID();
+    this.uuid = THREE.Math.generateUUID();
 
-	this.name = '';
-	this.type = 'Material';
+    this.name = '';
+    this.type = 'Material';
 
-	this.side = THREE.FrontSide;
+    this.side = THREE.FrontSide;
 
-	this.opacity = 1;
-	this.transparent = false;
+    this.opacity = 1;
+    this.transparent = false;
 
-	this.blending = THREE.NormalBlending;
+    this.blending = THREE.NormalBlending;
 
-	this.blendSrc = THREE.SrcAlphaFactor;
-	this.blendDst = THREE.OneMinusSrcAlphaFactor;
-	this.blendEquation = THREE.AddEquation;
+    this.blendSrc = THREE.SrcAlphaFactor;
+    this.blendDst = THREE.OneMinusSrcAlphaFactor;
+    this.blendEquation = THREE.AddEquation;
 
-	this.depthTest = true;
-	this.depthWrite = true;
+    this.depthTest = true;
+    this.depthWrite = true;
 
-	this.polygonOffset = false;
-	this.polygonOffsetFactor = 0;
-	this.polygonOffsetUnits = 0;
+    this.polygonOffset = false;
+    this.polygonOffsetFactor = 0;
+    this.polygonOffsetUnits = 0;
 
-	this.alphaTest = 0;
+    this.alphaTest = 0;
 
-	this.overdraw = 0; // Overdrawn pixels (typically between 0 and 1) for fixing antialiasing gaps in CanvasRenderer
+    this.overdraw = 0; // Overdrawn pixels (typically between 0 and 1) for fixing antialiasing gaps in CanvasRenderer
 
-	this.visible = true;
+    this.visible = true;
 
-	this.needsUpdate = true;
+    this.needsUpdate = true;
 
 };
 
 THREE.Material.prototype = {
 
-	constructor: THREE.Material,
+    constructor: THREE.Material,
 
-	setValues: function ( values ) {
+    setValues: function (values) {
 
-		if ( values === undefined ) return;
+        if (values === undefined) return;
 
-		for ( var key in values ) {
+        for (var key in values) {
 
-			var newValue = values[ key ];
+            var newValue = values[key];
 
-			if ( newValue === undefined ) {
+            if (newValue === undefined) {
 
-				console.warn( "THREE.Material: '" + key + "' parameter is undefined." );
-				continue;
+                console.warn("THREE.Material: '" + key + "' parameter is undefined.");
+                continue;
 
-			}
+            }
 
-			if ( key in this ) {
+            if (key in this) {
 
-				var currentValue = this[ key ];
+                var currentValue = this[key];
 
-				if ( currentValue instanceof THREE.Color ) {
+                if (currentValue instanceof THREE.Color) {
 
-					currentValue.set( newValue );
+                    currentValue.set(newValue);
 
-				} else if ( currentValue instanceof THREE.Vector3 && newValue instanceof THREE.Vector3 ) {
+                } else if (currentValue instanceof THREE.Vector3 && newValue instanceof THREE.Vector3) {
 
-					currentValue.copy( newValue );
+                    currentValue.copy(newValue);
 
-				} else if ( key == 'overdraw' ) {
+                } else if (key == 'overdraw') {
 
-					// ensure overdraw is backwards-compatable with legacy boolean type
-					this[ key ] = Number( newValue );
+                    // ensure overdraw is backwards-compatable with legacy boolean type
+                    this[key] = Number(newValue);
 
-				} else {
+                } else {
 
-					this[ key ] = newValue;
+                    this[key] = newValue;
 
-				}
+                }
 
-			}
+            }
 
-		}
+        }
 
-	},
+    },
 
-	toJSON: function () {
+    toJSON: function () {
 
-		var output = {
-			metadata: {
-				version: 4.2,
-				type: 'material',
-				generator: 'MaterialExporter'
-			},
-			uuid: this.uuid,
-			type: this.type
-		};
+        var output = {
+            metadata: {
+                version: 4.2,
+                type: 'material',
+                generator: 'MaterialExporter'
+            },
+            uuid: this.uuid,
+            type: this.type
+        };
 
-		if ( this.name !== "" ) output.name = this.name;
+        if (this.name !== "") output.name = this.name;
 
-		if ( this instanceof THREE.MeshBasicMaterial ) {
+        if (this instanceof THREE.MeshBasicMaterial) {
 
-			output.color = this.color.getHex();
-			if ( this.vertexColors !== THREE.NoColors ) output.vertexColors = this.vertexColors;
-			if ( this.blending !== THREE.NormalBlending ) output.blending = this.blending;
-			if ( this.side !== THREE.FrontSide ) output.side = this.side;
+            output.color = this.color.getHex();
+            if (this.vertexColors !== THREE.NoColors) output.vertexColors = this.vertexColors;
+            if (this.blending !== THREE.NormalBlending) output.blending = this.blending;
+            if (this.side !== THREE.FrontSide) output.side = this.side;
 
-		} else if ( this instanceof THREE.MeshLambertMaterial ) {
+        } else if (this instanceof THREE.MeshLambertMaterial) {
 
-			output.color = this.color.getHex();
-			output.ambient = this.ambient.getHex();
-			output.emissive = this.emissive.getHex();
-			if ( this.vertexColors !== THREE.NoColors ) output.vertexColors = this.vertexColors;
-			if ( this.blending !== THREE.NormalBlending ) output.blending = this.blending;
-			if ( this.side !== THREE.FrontSide ) output.side = this.side;
+            output.color = this.color.getHex();
+            output.ambient = this.ambient.getHex();
+            output.emissive = this.emissive.getHex();
+            if (this.vertexColors !== THREE.NoColors) output.vertexColors = this.vertexColors;
+            if (this.blending !== THREE.NormalBlending) output.blending = this.blending;
+            if (this.side !== THREE.FrontSide) output.side = this.side;
 
-		} else if ( this instanceof THREE.MeshPhongMaterial ) {
+        } else if (this instanceof THREE.MeshPhongMaterial) {
 
-			output.color = this.color.getHex();
-			output.ambient = this.ambient.getHex();
-			output.emissive = this.emissive.getHex();
-			output.specular = this.specular.getHex();
-			output.shininess = this.shininess;
-			if ( this.vertexColors !== THREE.NoColors ) output.vertexColors = this.vertexColors;
-			if ( this.blending !== THREE.NormalBlending ) output.blending = this.blending;
-			if ( this.side !== THREE.FrontSide ) output.side = this.side;
+            output.color = this.color.getHex();
+            output.ambient = this.ambient.getHex();
+            output.emissive = this.emissive.getHex();
+            output.specular = this.specular.getHex();
+            output.shininess = this.shininess;
+            if (this.vertexColors !== THREE.NoColors) output.vertexColors = this.vertexColors;
+            if (this.blending !== THREE.NormalBlending) output.blending = this.blending;
+            if (this.side !== THREE.FrontSide) output.side = this.side;
 
-		} else if ( this instanceof THREE.MeshNormalMaterial ) {
+        } else if (this instanceof THREE.MeshNormalMaterial) {
 
-			if ( this.shading !== THREE.FlatShading ) output.shading = this.shading;
-			if ( this.blending !== THREE.NormalBlending ) output.blending = this.blending;
-			if ( this.side !== THREE.FrontSide ) output.side = this.side;
+            if (this.shading !== THREE.FlatShading) output.shading = this.shading;
+            if (this.blending !== THREE.NormalBlending) output.blending = this.blending;
+            if (this.side !== THREE.FrontSide) output.side = this.side;
 
-		} else if ( this instanceof THREE.MeshDepthMaterial ) {
+        } else if (this instanceof THREE.MeshDepthMaterial) {
 
-			if ( this.blending !== THREE.NormalBlending ) output.blending = this.blending;
-			if ( this.side !== THREE.FrontSide ) output.side = this.side;
+            if (this.blending !== THREE.NormalBlending) output.blending = this.blending;
+            if (this.side !== THREE.FrontSide) output.side = this.side;
 
-		} else if ( this instanceof THREE.ShaderMaterial ) {
+        } else if (this instanceof THREE.ShaderMaterial) {
 
-			output.uniforms = this.uniforms;
-			output.vertexShader = this.vertexShader;
-			output.fragmentShader = this.fragmentShader;
+            output.uniforms = this.uniforms;
+            output.vertexShader = this.vertexShader;
+            output.fragmentShader = this.fragmentShader;
 
-		} else if ( this instanceof THREE.SpriteMaterial ) {
+        } else if (this instanceof THREE.SpriteMaterial) {
 
-			output.color = this.color.getHex();
+            output.color = this.color.getHex();
 
-		}
+        }
 
-		if ( this.opacity < 1 ) output.opacity = this.opacity;
-		if ( this.transparent !== false ) output.transparent = this.transparent;
-		if ( this.wireframe !== false ) output.wireframe = this.wireframe;
+        if (this.opacity < 1) output.opacity = this.opacity;
+        if (this.transparent !== false) output.transparent = this.transparent;
+        if (this.wireframe !== false) output.wireframe = this.wireframe;
 
-		return output;
+        return output;
 
-	},
+    },
 
-	clone: function ( material ) {
+    clone: function (material) {
 
-		if ( material === undefined ) material = new THREE.Material();
+        if (material === undefined) material = new THREE.Material();
 
-		material.name = this.name;
+        material.name = this.name;
 
-		material.side = this.side;
+        material.side = this.side;
 
-		material.opacity = this.opacity;
-		material.transparent = this.transparent;
+        material.opacity = this.opacity;
+        material.transparent = this.transparent;
 
-		material.blending = this.blending;
+        material.blending = this.blending;
 
-		material.blendSrc = this.blendSrc;
-		material.blendDst = this.blendDst;
-		material.blendEquation = this.blendEquation;
+        material.blendSrc = this.blendSrc;
+        material.blendDst = this.blendDst;
+        material.blendEquation = this.blendEquation;
 
-		material.depthTest = this.depthTest;
-		material.depthWrite = this.depthWrite;
+        material.depthTest = this.depthTest;
+        material.depthWrite = this.depthWrite;
 
-		material.polygonOffset = this.polygonOffset;
-		material.polygonOffsetFactor = this.polygonOffsetFactor;
-		material.polygonOffsetUnits = this.polygonOffsetUnits;
+        material.polygonOffset = this.polygonOffset;
+        material.polygonOffsetFactor = this.polygonOffsetFactor;
+        material.polygonOffsetUnits = this.polygonOffsetUnits;
 
-		material.alphaTest = this.alphaTest;
+        material.alphaTest = this.alphaTest;
 
-		material.overdraw = this.overdraw;
+        material.overdraw = this.overdraw;
 
-		material.visible = this.visible;
+        material.visible = this.visible;
 
-		return material;
+        return material;
 
-	},
+    },
 
-	dispose: function () {
+    dispose: function () {
 
-		this.dispatchEvent( { type: 'dispose' } );
+        this.dispatchEvent({ type: 'dispose' });
 
-	}
+    }
 
 };
 
-THREE.EventDispatcher.prototype.apply( THREE.Material.prototype );
+THREE.EventDispatcher.prototype.apply(THREE.Material.prototype);
 
 THREE.MaterialIdCount = 0;

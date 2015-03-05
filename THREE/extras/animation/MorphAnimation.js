@@ -3,67 +3,67 @@
  * @author willy-vvu / http://willy-vvu.github.io
  */
 
-THREE.MorphAnimation = function ( mesh ) {
+THREE.MorphAnimation = function (mesh) {
 
-	this.mesh = mesh;
-	this.frames = mesh.morphTargetInfluences.length;
-	this.currentTime = 0;
-	this.duration = 1000;
-	this.loop = true;
-	this.lastFrame = 0;
-	this.currentFrame = 0;
+    this.mesh = mesh;
+    this.frames = mesh.morphTargetInfluences.length;
+    this.currentTime = 0;
+    this.duration = 1000;
+    this.loop = true;
+    this.lastFrame = 0;
+    this.currentFrame = 0;
 
-	this.isPlaying = false;
+    this.isPlaying = false;
 
 };
 
 THREE.MorphAnimation.prototype = {
 
-	constructor: THREE.MorphAnimation,
+    constructor: THREE.MorphAnimation,
 
-	play: function () {
+    play: function () {
 
-		this.isPlaying = true;
+        this.isPlaying = true;
 
-	},
+    },
 
-	pause: function () {
+    pause: function () {
 
-		this.isPlaying = false;
+        this.isPlaying = false;
 
-	},
+    },
 
-	update: function ( delta ) {
+    update: function (delta) {
 
-		if ( this.isPlaying === false ) return;
+        if (this.isPlaying === false) return;
 
-		this.currentTime += delta;
+        this.currentTime += delta;
 
-		if ( this.loop === true && this.currentTime > this.duration ) {
+        if (this.loop === true && this.currentTime > this.duration) {
 
-			this.currentTime %= this.duration;
+            this.currentTime %= this.duration;
 
-		}
+        }
 
-		this.currentTime = Math.min( this.currentTime, this.duration );
+        this.currentTime = Math.min(this.currentTime, this.duration);
 
-		var interpolation = this.duration / this.frames;
-		var frame = Math.floor( this.currentTime / interpolation );
+        var interpolation = this.duration / this.frames;
+        var frame = Math.floor(this.currentTime / interpolation);
 
-		if ( frame != this.currentFrame ) {
+        if (frame != this.currentFrame) {
 
-			this.mesh.morphTargetInfluences[ this.lastFrame ] = 0;
-			this.mesh.morphTargetInfluences[ this.currentFrame ] = 1;
-			this.mesh.morphTargetInfluences[ frame ] = 0;
+            this.mesh.morphTargetInfluences[this.lastFrame] = 0;
+            this.mesh.morphTargetInfluences[this.currentFrame] = 1;
+            this.mesh.morphTargetInfluences[frame] = 0;
 
-			this.lastFrame = this.currentFrame;
-			this.currentFrame = frame;
+            this.lastFrame = this.currentFrame;
+            this.currentFrame = frame;
 
-		}
+        }
 
-		this.mesh.morphTargetInfluences[ frame ] = ( this.currentTime % interpolation ) / interpolation;
-		this.mesh.morphTargetInfluences[ this.lastFrame ] = 1 - this.mesh.morphTargetInfluences[ frame ];
+        this.mesh.morphTargetInfluences[frame] = ( this.currentTime % interpolation ) / interpolation;
+        this.mesh.morphTargetInfluences[this.lastFrame] = 1 - this.mesh.morphTargetInfluences[frame];
 
-	}
+    }
 
 };

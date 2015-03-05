@@ -4,205 +4,207 @@
 
 THREE.AnimationHandler = {
 
-	LINEAR: 0,
-	CATMULLROM: 1,
-	CATMULLROM_FORWARD: 2,
+    LINEAR: 0,
+    CATMULLROM: 1,
+    CATMULLROM_FORWARD: 2,
 
-	//
+    //
 
-	add: function () { console.warn( 'THREE.AnimationHandler.add() has been deprecated.' ); },
-	get: function () { console.warn( 'THREE.AnimationHandler.get() has been deprecated.' ); },
-	remove: function () { console.warn( 'THREE.AnimationHandler.remove() has been deprecated.' ); },
+    add: function () {
+        console.warn('THREE.AnimationHandler.add() has been deprecated.');
+    },
+    get: function () {
+        console.warn('THREE.AnimationHandler.get() has been deprecated.');
+    },
+    remove: function () {
+        console.warn('THREE.AnimationHandler.remove() has been deprecated.');
+    },
 
-	//
+    //
 
-	animations: [],
+    animations: [],
 
-	init: function ( data ) {
+    init: function (data) {
 
-		if ( data.initialized === true ) return data;
+        if (data.initialized === true) return data;
 
-		// loop through all keys
+        // loop through all keys
 
-		for ( var h = 0; h < data.hierarchy.length; h ++ ) {
+        for (var h = 0; h < data.hierarchy.length; h++) {
 
-			for ( var k = 0; k < data.hierarchy[ h ].keys.length; k ++ ) {
+            for (var k = 0; k < data.hierarchy[h].keys.length; k++) {
 
-				// remove minus times
+                // remove minus times
 
-				if ( data.hierarchy[ h ].keys[ k ].time < 0 ) {
+                if (data.hierarchy[h].keys[k].time < 0) {
 
-					 data.hierarchy[ h ].keys[ k ].time = 0;
+                    data.hierarchy[h].keys[k].time = 0;
 
-				}
+                }
 
-				// create quaternions
+                // create quaternions
 
-				if ( data.hierarchy[ h ].keys[ k ].rot !== undefined &&
-				  ! ( data.hierarchy[ h ].keys[ k ].rot instanceof THREE.Quaternion ) ) {
+                if (data.hierarchy[h].keys[k].rot !== undefined && !( data.hierarchy[h].keys[k].rot instanceof THREE.Quaternion )) {
 
-					var quat = data.hierarchy[ h ].keys[ k ].rot;
-					data.hierarchy[ h ].keys[ k ].rot = new THREE.Quaternion().fromArray( quat );
+                    var quat = data.hierarchy[h].keys[k].rot;
+                    data.hierarchy[h].keys[k].rot = new THREE.Quaternion().fromArray(quat);
 
-				}
+                }
 
-			}
+            }
 
-			// prepare morph target keys
+            // prepare morph target keys
 
-			if ( data.hierarchy[ h ].keys.length && data.hierarchy[ h ].keys[ 0 ].morphTargets !== undefined ) {
+            if (data.hierarchy[h].keys.length && data.hierarchy[h].keys[0].morphTargets !== undefined) {
 
-				// get all used
+                // get all used
 
-				var usedMorphTargets = {};
+                var usedMorphTargets = {};
 
-				for ( var k = 0; k < data.hierarchy[ h ].keys.length; k ++ ) {
+                for (var k = 0; k < data.hierarchy[h].keys.length; k++) {
 
-					for ( var m = 0; m < data.hierarchy[ h ].keys[ k ].morphTargets.length; m ++ ) {
+                    for (var m = 0; m < data.hierarchy[h].keys[k].morphTargets.length; m++) {
 
-						var morphTargetName = data.hierarchy[ h ].keys[ k ].morphTargets[ m ];
-						usedMorphTargets[ morphTargetName ] = - 1;
+                        var morphTargetName = data.hierarchy[h].keys[k].morphTargets[m];
+                        usedMorphTargets[morphTargetName] = -1;
 
-					}
+                    }
 
-				}
+                }
 
-				data.hierarchy[ h ].usedMorphTargets = usedMorphTargets;
+                data.hierarchy[h].usedMorphTargets = usedMorphTargets;
 
+                // set all used on all frames
 
-				// set all used on all frames
+                for (var k = 0; k < data.hierarchy[h].keys.length; k++) {
 
-				for ( var k = 0; k < data.hierarchy[ h ].keys.length; k ++ ) {
+                    var influences = {};
 
-					var influences = {};
+                    for (var morphTargetName in usedMorphTargets) {
 
-					for ( var morphTargetName in usedMorphTargets ) {
+                        for (var m = 0; m < data.hierarchy[h].keys[k].morphTargets.length; m++) {
 
-						for ( var m = 0; m < data.hierarchy[ h ].keys[ k ].morphTargets.length; m ++ ) {
+                            if (data.hierarchy[h].keys[k].morphTargets[m] === morphTargetName) {
 
-							if ( data.hierarchy[ h ].keys[ k ].morphTargets[ m ] === morphTargetName ) {
+                                influences[morphTargetName] = data.hierarchy[h].keys[k].morphTargetsInfluences[m];
+                                break;
 
-								influences[ morphTargetName ] = data.hierarchy[ h ].keys[ k ].morphTargetsInfluences[ m ];
-								break;
+                            }
 
-							}
+                        }
 
-						}
+                        if (m === data.hierarchy[h].keys[k].morphTargets.length) {
 
-						if ( m === data.hierarchy[ h ].keys[ k ].morphTargets.length ) {
+                            influences[morphTargetName] = 0;
 
-							influences[ morphTargetName ] = 0;
+                        }
 
-						}
+                    }
 
-					}
+                    data.hierarchy[h].keys[k].morphTargetsInfluences = influences;
 
-					data.hierarchy[ h ].keys[ k ].morphTargetsInfluences = influences;
+                }
 
-				}
+            }
 
-			}
+            // remove all keys that are on the same time
 
+            for (var k = 1; k < data.hierarchy[h].keys.length; k++) {
 
-			// remove all keys that are on the same time
+                if (data.hierarchy[h].keys[k].time === data.hierarchy[h].keys[k - 1].time) {
 
-			for ( var k = 1; k < data.hierarchy[ h ].keys.length; k ++ ) {
+                    data.hierarchy[h].keys.splice(k, 1);
+                    k--;
 
-				if ( data.hierarchy[ h ].keys[ k ].time === data.hierarchy[ h ].keys[ k - 1 ].time ) {
+                }
 
-					data.hierarchy[ h ].keys.splice( k, 1 );
-					k --;
+            }
 
-				}
+            // set index
 
-			}
+            for (var k = 0; k < data.hierarchy[h].keys.length; k++) {
 
+                data.hierarchy[h].keys[k].index = k;
 
-			// set index
+            }
 
-			for ( var k = 0; k < data.hierarchy[ h ].keys.length; k ++ ) {
+        }
 
-				data.hierarchy[ h ].keys[ k ].index = k;
+        data.initialized = true;
 
-			}
+        return data;
 
-		}
+    },
 
-		data.initialized = true;
+    parse: function (root) {
 
-		return data;
+        var parseRecurseHierarchy = function (root, hierarchy) {
 
-	},
+            hierarchy.push(root);
 
-	parse: function ( root ) {
+            for (var c = 0; c < root.children.length; c++)
+                parseRecurseHierarchy(root.children[c], hierarchy);
 
-		var parseRecurseHierarchy = function ( root, hierarchy ) {
+        };
 
-			hierarchy.push( root );
+        // setup hierarchy
 
-			for ( var c = 0; c < root.children.length; c ++ )
-				parseRecurseHierarchy( root.children[ c ], hierarchy );
+        var hierarchy = [];
 
-		};
+        if (root instanceof THREE.SkinnedMesh) {
 
-		// setup hierarchy
+            for (var b = 0; b < root.skeleton.bones.length; b++) {
 
-		var hierarchy = [];
+                hierarchy.push(root.skeleton.bones[b]);
 
-		if ( root instanceof THREE.SkinnedMesh ) {
+            }
 
-			for ( var b = 0; b < root.skeleton.bones.length; b ++ ) {
+        } else {
 
-				hierarchy.push( root.skeleton.bones[ b ] );
+            parseRecurseHierarchy(root, hierarchy);
 
-			}
+        }
 
-		} else {
+        return hierarchy;
 
-			parseRecurseHierarchy( root, hierarchy );
+    },
 
-		}
+    play: function (animation) {
 
-		return hierarchy;
+        if (this.animations.indexOf(animation) === -1) {
 
-	},
+            this.animations.push(animation);
 
-	play: function ( animation ) {
+        }
 
-		if ( this.animations.indexOf( animation ) === - 1 ) {
+    },
 
-			this.animations.push( animation );
+    stop: function (animation) {
 
-		}
+        var index = this.animations.indexOf(animation);
 
-	},
+        if (index !== -1) {
 
-	stop: function ( animation ) {
+            this.animations.splice(index, 1);
 
-		var index = this.animations.indexOf( animation );
+        }
 
-		if ( index !== - 1 ) {
+    },
 
-			this.animations.splice( index, 1 );
+    update: function (deltaTimeMS) {
 
-		}
+        for (var i = 0; i < this.animations.length; i++) {
 
-	},
+            this.animations[i].resetBlendWeights();
 
-	update: function ( deltaTimeMS ) {
+        }
 
-		for ( var i = 0; i < this.animations.length; i ++ ) {
+        for (var i = 0; i < this.animations.length; i++) {
 
-			this.animations[ i ].resetBlendWeights( );
+            this.animations[i].update(deltaTimeMS);
 
-		}
+        }
 
-		for ( var i = 0; i < this.animations.length; i ++ ) {
-
-			this.animations[ i ].update( deltaTimeMS );
-
-		}
-
-	}
+    }
 
 };

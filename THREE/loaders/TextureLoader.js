@@ -2,41 +2,41 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.TextureLoader = function ( manager ) {
+THREE.TextureLoader = function (manager) {
 
-	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
+    this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
 
 };
 
 THREE.TextureLoader.prototype = {
 
-	constructor: THREE.TextureLoader,
+    constructor: THREE.TextureLoader,
 
-	load: function ( url, onLoad, onProgress, onError ) {
+    load: function (url, onLoad, onProgress, onError) {
 
-		var scope = this;
+        var scope = this;
 
-		var loader = new THREE.ImageLoader( scope.manager );
-		loader.setCrossOrigin( this.crossOrigin );
-		loader.load( url, function ( image ) {
+        var loader = new THREE.ImageLoader(scope.manager);
+        loader.setCrossOrigin(this.crossOrigin);
+        loader.load(url, function (image) {
 
-			var texture = new THREE.Texture( image );
-			texture.needsUpdate = true;
+            var texture = new THREE.Texture(image);
+            texture.needsUpdate = true;
 
-			if ( onLoad !== undefined ) {
+            if (onLoad !== undefined) {
 
-				onLoad( texture );
+                onLoad(texture);
 
-			}
+            }
 
-		}, onProgress, onError );
+        }, onProgress, onError);
 
-	},
+    },
 
-	setCrossOrigin: function ( value ) {
+    setCrossOrigin: function (value) {
 
-		this.crossOrigin = value;
+        this.crossOrigin = value;
 
-	}
+    }
 
 };

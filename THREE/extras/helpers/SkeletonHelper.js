@@ -5,94 +5,98 @@
  * @author ikerr / http://verold.com
  */
 
-THREE.SkeletonHelper = function ( object ) {
+THREE.SkeletonHelper = function (object) {
 
-	this.bones = this.getBoneList( object );
+    this.bones = this.getBoneList(object);
 
-	var geometry = new THREE.Geometry();
+    var geometry = new THREE.Geometry();
 
-	for ( var i = 0; i < this.bones.length; i ++ ) {
+    for (var i = 0; i < this.bones.length; i++) {
 
-		var bone = this.bones[ i ];
+        var bone = this.bones[i];
 
-		if ( bone.parent instanceof THREE.Bone ) {
+        if (bone.parent instanceof THREE.Bone) {
 
-			geometry.vertices.push( new THREE.Vector3() );
-			geometry.vertices.push( new THREE.Vector3() );
-			geometry.colors.push( new THREE.Color( 0, 0, 1 ) );
-			geometry.colors.push( new THREE.Color( 0, 1, 0 ) );
+            geometry.vertices.push(new THREE.Vector3());
+            geometry.vertices.push(new THREE.Vector3());
+            geometry.colors.push(new THREE.Color(0, 0, 1));
+            geometry.colors.push(new THREE.Color(0, 1, 0));
 
-		}
+        }
 
-	}
+    }
 
-	var material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, depthTest: false, depthWrite: false, transparent: true } );
+    var material = new THREE.LineBasicMaterial({
+        vertexColors: THREE.VertexColors,
+        depthTest: false,
+        depthWrite: false,
+        transparent: true
+    });
 
-	THREE.Line.call( this, geometry, material, THREE.LinePieces );
+    THREE.Line.call(this, geometry, material, THREE.LinePieces);
 
-	this.root = object;
+    this.root = object;
 
-	this.matrix = object.matrixWorld;
-	this.matrixAutoUpdate = false;
+    this.matrix = object.matrixWorld;
+    this.matrixAutoUpdate = false;
 
-	this.update();
+    this.update();
 
 };
 
-
-THREE.SkeletonHelper.prototype = Object.create( THREE.Line.prototype );
+THREE.SkeletonHelper.prototype = Object.create(THREE.Line.prototype);
 THREE.SkeletonHelper.prototype.constructor = THREE.SkeletonHelper;
 
-THREE.SkeletonHelper.prototype.getBoneList = function( object ) {
+THREE.SkeletonHelper.prototype.getBoneList = function (object) {
 
-	var boneList = [];
+    var boneList = [];
 
-	if ( object instanceof THREE.Bone ) {
+    if (object instanceof THREE.Bone) {
 
-		boneList.push( object );
+        boneList.push(object);
 
-	}
+    }
 
-	for ( var i = 0; i < object.children.length; i ++ ) {
+    for (var i = 0; i < object.children.length; i++) {
 
-		boneList.push.apply( boneList, this.getBoneList( object.children[ i ] ) );
+        boneList.push.apply(boneList, this.getBoneList(object.children[i]));
 
-	}
+    }
 
-	return boneList;
+    return boneList;
 
 };
 
 THREE.SkeletonHelper.prototype.update = function () {
 
-	var geometry = this.geometry;
+    var geometry = this.geometry;
 
-	var matrixWorldInv = new THREE.Matrix4().getInverse( this.root.matrixWorld );
+    var matrixWorldInv = new THREE.Matrix4().getInverse(this.root.matrixWorld);
 
-	var boneMatrix = new THREE.Matrix4();
+    var boneMatrix = new THREE.Matrix4();
 
-	var j = 0;
+    var j = 0;
 
-	for ( var i = 0; i < this.bones.length; i ++ ) {
+    for (var i = 0; i < this.bones.length; i++) {
 
-		var bone = this.bones[ i ];
+        var bone = this.bones[i];
 
-		if ( bone.parent instanceof THREE.Bone ) {
+        if (bone.parent instanceof THREE.Bone) {
 
-			boneMatrix.multiplyMatrices( matrixWorldInv, bone.matrixWorld );
-			geometry.vertices[ j ].setFromMatrixPosition( boneMatrix );
+            boneMatrix.multiplyMatrices(matrixWorldInv, bone.matrixWorld);
+            geometry.vertices[j].setFromMatrixPosition(boneMatrix);
 
-			boneMatrix.multiplyMatrices( matrixWorldInv, bone.parent.matrixWorld );
-			geometry.vertices[ j + 1 ].setFromMatrixPosition( boneMatrix );
+            boneMatrix.multiplyMatrices(matrixWorldInv, bone.parent.matrixWorld);
+            geometry.vertices[j + 1].setFromMatrixPosition(boneMatrix);
 
-			j += 2;
+            j += 2;
 
-		}
+        }
 
-	}
+    }
 
-	geometry.verticesNeedUpdate = true;
+    geometry.verticesNeedUpdate = true;
 
-	geometry.computeBoundingSphere();
+    geometry.computeBoundingSphere();
 
 };

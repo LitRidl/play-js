@@ -6,21 +6,21 @@ var THREE = { REVISION: '70' };
 
 // browserify support
 
-if ( typeof module === 'object' ) {
+if (typeof module === 'object') {
 
-	module.exports = THREE;
+    module.exports = THREE;
 
 }
 
 // polyfills
 
-if ( Math.sign === undefined ) {
+if (Math.sign === undefined) {
 
-	Math.sign = function ( x ) {
+    Math.sign = function (x) {
 
-		return ( x < 0 ) ? - 1 : ( x > 0 ) ? 1 : 0;
+        return ( x < 0 ) ? -1 : ( x > 0 ) ? 1 : 0;
 
-	};
+    };
 
 }
 
@@ -106,7 +106,6 @@ THREE.DstColorFactor = 208;
 THREE.OneMinusDstColorFactor = 209;
 THREE.SrcAlphaSaturateFactor = 210;
 
-
 // TEXTURE CONSTANTS
 
 THREE.MultiplyOperation = 0;
@@ -174,7 +173,6 @@ THREE.RGBA_S3TC_DXT1_Format = 2002;
 THREE.RGBA_S3TC_DXT3_Format = 2003;
 THREE.RGBA_S3TC_DXT5_Format = 2004;
 
-
 // PVRTC compressed texture formats
 
 THREE.RGB_PVRTC_4BPPV1_Format = 2100;
@@ -182,43 +180,46 @@ THREE.RGB_PVRTC_2BPPV1_Format = 2101;
 THREE.RGBA_PVRTC_4BPPV1_Format = 2102;
 THREE.RGBA_PVRTC_2BPPV1_Format = 2103;
 
-
 // DEPRECATED
 
 THREE.Projector = function () {
 
-	console.error( 'THREE.Projector has been moved to /examples/js/renderers/Projector.js.' );
+    console.error('THREE.Projector has been moved to /examples/js/renderers/Projector.js.');
 
-	this.projectVector = function ( vector, camera ) {
+    this.projectVector = function (vector, camera) {
 
-		console.warn( 'THREE.Projector: .projectVector() is now vector.project().' );
-		vector.project( camera );
+        console.warn('THREE.Projector: .projectVector() is now vector.project().');
+        vector.project(camera);
 
-	};
+    };
 
-	this.unprojectVector = function ( vector, camera ) {
+    this.unprojectVector = function (vector, camera) {
 
-		console.warn( 'THREE.Projector: .unprojectVector() is now vector.unproject().' );
-		vector.unproject( camera );
+        console.warn('THREE.Projector: .unprojectVector() is now vector.unproject().');
+        vector.unproject(camera);
 
-	};
+    };
 
-	this.pickingRay = function ( vector, camera ) {
+    this.pickingRay = function (vector, camera) {
 
-		console.error( 'THREE.Projector: .pickingRay() is now raycaster.setFromCamera().' );
+        console.error('THREE.Projector: .pickingRay() is now raycaster.setFromCamera().');
 
-	};
+    };
 
 };
 
 THREE.CanvasRenderer = function () {
 
-	console.error( 'THREE.CanvasRenderer has been moved to /examples/js/renderers/CanvasRenderer.js' );
+    console.error('THREE.CanvasRenderer has been moved to /examples/js/renderers/CanvasRenderer.js');
 
-	this.domElement = document.createElement( 'canvas' );
-	this.clear = function () {};
-	this.render = function () {};
-	this.setClearColor = function () {};
-	this.setSize = function () {};
+    this.domElement = document.createElement('canvas');
+    this.clear = function () {
+    };
+    this.render = function () {
+    };
+    this.setClearColor = function () {
+    };
+    this.setSize = function () {
+    };
 
 };

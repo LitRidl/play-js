@@ -35,83 +35,83 @@
  * }
  */
 
-THREE.MeshBasicMaterial = function ( parameters ) {
+THREE.MeshBasicMaterial = function (parameters) {
 
-	THREE.Material.call( this );
+    THREE.Material.call(this);
 
-	this.type = 'MeshBasicMaterial';
+    this.type = 'MeshBasicMaterial';
 
-	this.color = new THREE.Color( 0xffffff ); // emissive
+    this.color = new THREE.Color(0xffffff); // emissive
 
-	this.map = null;
+    this.map = null;
 
-	this.lightMap = null;
+    this.lightMap = null;
 
-	this.specularMap = null;
+    this.specularMap = null;
 
-	this.alphaMap = null;
+    this.alphaMap = null;
 
-	this.envMap = null;
-	this.combine = THREE.MultiplyOperation;
-	this.reflectivity = 1;
-	this.refractionRatio = 0.98;
+    this.envMap = null;
+    this.combine = THREE.MultiplyOperation;
+    this.reflectivity = 1;
+    this.refractionRatio = 0.98;
 
-	this.fog = true;
+    this.fog = true;
 
-	this.shading = THREE.SmoothShading;
+    this.shading = THREE.SmoothShading;
 
-	this.wireframe = false;
-	this.wireframeLinewidth = 1;
-	this.wireframeLinecap = 'round';
-	this.wireframeLinejoin = 'round';
+    this.wireframe = false;
+    this.wireframeLinewidth = 1;
+    this.wireframeLinecap = 'round';
+    this.wireframeLinejoin = 'round';
 
-	this.vertexColors = THREE.NoColors;
+    this.vertexColors = THREE.NoColors;
 
-	this.skinning = false;
-	this.morphTargets = false;
+    this.skinning = false;
+    this.morphTargets = false;
 
-	this.setValues( parameters );
+    this.setValues(parameters);
 
 };
 
-THREE.MeshBasicMaterial.prototype = Object.create( THREE.Material.prototype );
+THREE.MeshBasicMaterial.prototype = Object.create(THREE.Material.prototype);
 THREE.MeshBasicMaterial.prototype.constructor = THREE.MeshBasicMaterial;
 
 THREE.MeshBasicMaterial.prototype.clone = function () {
 
-	var material = new THREE.MeshBasicMaterial();
+    var material = new THREE.MeshBasicMaterial();
 
-	THREE.Material.prototype.clone.call( this, material );
+    THREE.Material.prototype.clone.call(this, material);
 
-	material.color.copy( this.color );
+    material.color.copy(this.color);
 
-	material.map = this.map;
+    material.map = this.map;
 
-	material.lightMap = this.lightMap;
+    material.lightMap = this.lightMap;
 
-	material.specularMap = this.specularMap;
+    material.specularMap = this.specularMap;
 
-	material.alphaMap = this.alphaMap;
+    material.alphaMap = this.alphaMap;
 
-	material.envMap = this.envMap;
-	material.combine = this.combine;
-	material.reflectivity = this.reflectivity;
-	material.refractionRatio = this.refractionRatio;
+    material.envMap = this.envMap;
+    material.combine = this.combine;
+    material.reflectivity = this.reflectivity;
+    material.refractionRatio = this.refractionRatio;
 
-	material.fog = this.fog;
+    material.fog = this.fog;
 
-	material.shading = this.shading;
+    material.shading = this.shading;
 
-	material.wireframe = this.wireframe;
-	material.wireframeLinewidth = this.wireframeLinewidth;
-	material.wireframeLinecap = this.wireframeLinecap;
-	material.wireframeLinejoin = this.wireframeLinejoin;
+    material.wireframe = this.wireframe;
+    material.wireframeLinewidth = this.wireframeLinewidth;
+    material.wireframeLinecap = this.wireframeLinecap;
+    material.wireframeLinejoin = this.wireframeLinejoin;
 
-	material.vertexColors = this.vertexColors;
+    material.vertexColors = this.vertexColors;
 
-	material.skinning = this.skinning;
-	material.morphTargets = this.morphTargets;
+    material.skinning = this.skinning;
+    material.morphTargets = this.morphTargets;
 
-	return material;
+    return material;
 
 };

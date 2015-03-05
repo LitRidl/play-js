@@ -2,77 +2,77 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.BufferGeometryLoader = function ( manager ) {
+THREE.BufferGeometryLoader = function (manager) {
 
-	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
+    this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
 
 };
 
 THREE.BufferGeometryLoader.prototype = {
 
-	constructor: THREE.BufferGeometryLoader,
+    constructor: THREE.BufferGeometryLoader,
 
-	load: function ( url, onLoad, onProgress, onError ) {
+    load: function (url, onLoad, onProgress, onError) {
 
-		var scope = this;
+        var scope = this;
 
-		var loader = new THREE.XHRLoader( scope.manager );
-		loader.setCrossOrigin( this.crossOrigin );
-		loader.load( url, function ( text ) {
+        var loader = new THREE.XHRLoader(scope.manager);
+        loader.setCrossOrigin(this.crossOrigin);
+        loader.load(url, function (text) {
 
-			onLoad( scope.parse( JSON.parse( text ) ) );
+            onLoad(scope.parse(JSON.parse(text)));
 
-		}, onProgress, onError );
+        }, onProgress, onError);
 
-	},
+    },
 
-	setCrossOrigin: function ( value ) {
+    setCrossOrigin: function (value) {
 
-		this.crossOrigin = value;
+        this.crossOrigin = value;
 
-	},
+    },
 
-	parse: function ( json ) {
+    parse: function (json) {
 
-		var geometry = new THREE.BufferGeometry();
+        var geometry = new THREE.BufferGeometry();
 
-		var attributes = json.attributes;
+        var attributes = json.attributes;
 
-		for ( var key in attributes ) {
+        for (var key in attributes) {
 
-			var attribute = attributes[ key ];
-			var typedArray = new self[ attribute.type ]( attribute.array );
+            var attribute = attributes[key];
+            var typedArray = new self[attribute.type](attribute.array);
 
-			geometry.addAttribute( key, new THREE.BufferAttribute( typedArray, attribute.itemSize ) );
+            geometry.addAttribute(key, new THREE.BufferAttribute(typedArray, attribute.itemSize));
 
-		}
+        }
 
-		var offsets = json.offsets;
+        var offsets = json.offsets;
 
-		if ( offsets !== undefined ) {
+        if (offsets !== undefined) {
 
-			geometry.offsets = JSON.parse( JSON.stringify( offsets ) );
+            geometry.offsets = JSON.parse(JSON.stringify(offsets));
 
-		}
+        }
 
-		var boundingSphere = json.boundingSphere;
+        var boundingSphere = json.boundingSphere;
 
-		if ( boundingSphere !== undefined ) {
+        if (boundingSphere !== undefined) {
 
-			var center = new THREE.Vector3();
+            var center = new THREE.Vector3();
 
-			if ( boundingSphere.center !== undefined ) {
+            if (boundingSphere.center !== undefined) {
 
-				center.fromArray( boundingSphere.center );
+                center.fromArray(boundingSphere.center);
 
-			}
+            }
 
-			geometry.boundingSphere = new THREE.Sphere( center, boundingSphere.radius );
+            geometry.boundingSphere = new THREE.Sphere(center, boundingSphere.radius);
 
-		}
+        }
 
-		return geometry;
+        return geometry;
 
-	}
+    }
 
 };

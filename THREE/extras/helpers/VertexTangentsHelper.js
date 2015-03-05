@@ -1,97 +1,97 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author WestLangley / http://github.com/WestLangley
-*/
+ */
 
-THREE.VertexTangentsHelper = function ( object, size, hex, linewidth ) {
+THREE.VertexTangentsHelper = function (object, size, hex, linewidth) {
 
-	this.object = object;
+    this.object = object;
 
-	this.size = ( size !== undefined ) ? size : 1;
+    this.size = ( size !== undefined ) ? size : 1;
 
-	var color = ( hex !== undefined ) ? hex : 0x0000ff;
+    var color = ( hex !== undefined ) ? hex : 0x0000ff;
 
-	var width = ( linewidth !== undefined ) ? linewidth : 1;
+    var width = ( linewidth !== undefined ) ? linewidth : 1;
 
-	var geometry = new THREE.Geometry();
+    var geometry = new THREE.Geometry();
 
-	var vertices = object.geometry.vertices;
+    var vertices = object.geometry.vertices;
 
-	var faces = object.geometry.faces;
+    var faces = object.geometry.faces;
 
-	for ( var i = 0, l = faces.length; i < l; i ++ ) {
+    for (var i = 0, l = faces.length; i < l; i++) {
 
-		var face = faces[ i ];
+        var face = faces[i];
 
-		for ( var j = 0, jl = face.vertexTangents.length; j < jl; j ++ ) {
+        for (var j = 0, jl = face.vertexTangents.length; j < jl; j++) {
 
-			geometry.vertices.push( new THREE.Vector3() );
-			geometry.vertices.push( new THREE.Vector3() );
+            geometry.vertices.push(new THREE.Vector3());
+            geometry.vertices.push(new THREE.Vector3());
 
-		}
+        }
 
-	}
+    }
 
-	THREE.Line.call( this, geometry, new THREE.LineBasicMaterial( { color: color, linewidth: width } ), THREE.LinePieces );
+    THREE.Line.call(this, geometry, new THREE.LineBasicMaterial({ color: color, linewidth: width }), THREE.LinePieces);
 
-	this.matrixAutoUpdate = false;
+    this.matrixAutoUpdate = false;
 
-	this.update();
+    this.update();
 
 };
 
-THREE.VertexTangentsHelper.prototype = Object.create( THREE.Line.prototype );
+THREE.VertexTangentsHelper.prototype = Object.create(THREE.Line.prototype);
 THREE.VertexTangentsHelper.prototype.constructor = THREE.VertexTangentsHelper;
 
-THREE.VertexTangentsHelper.prototype.update = ( function ( object ) {
+THREE.VertexTangentsHelper.prototype.update = ( function (object) {
 
-	var v1 = new THREE.Vector3();
+    var v1 = new THREE.Vector3();
 
-	return function( object ) {
+    return function (object) {
 
-		var keys = [ 'a', 'b', 'c', 'd' ];
+        var keys = ['a', 'b', 'c', 'd'];
 
-		this.object.updateMatrixWorld( true );
+        this.object.updateMatrixWorld(true);
 
-		var vertices = this.geometry.vertices;
+        var vertices = this.geometry.vertices;
 
-		var verts = this.object.geometry.vertices;
+        var verts = this.object.geometry.vertices;
 
-		var faces = this.object.geometry.faces;
+        var faces = this.object.geometry.faces;
 
-		var worldMatrix = this.object.matrixWorld;
+        var worldMatrix = this.object.matrixWorld;
 
-		var idx = 0;
+        var idx = 0;
 
-		for ( var i = 0, l = faces.length; i < l; i ++ ) {
+        for (var i = 0, l = faces.length; i < l; i++) {
 
-			var face = faces[ i ];
+            var face = faces[i];
 
-			for ( var j = 0, jl = face.vertexTangents.length; j < jl; j ++ ) {
+            for (var j = 0, jl = face.vertexTangents.length; j < jl; j++) {
 
-				var vertexId = face[ keys[ j ] ];
-				var vertex = verts[ vertexId ];
+                var vertexId = face[keys[j]];
+                var vertex = verts[vertexId];
 
-				var tangent = face.vertexTangents[ j ];
+                var tangent = face.vertexTangents[j];
 
-				vertices[ idx ].copy( vertex ).applyMatrix4( worldMatrix );
+                vertices[idx].copy(vertex).applyMatrix4(worldMatrix);
 
-				v1.copy( tangent ).transformDirection( worldMatrix ).multiplyScalar( this.size );
+                v1.copy(tangent).transformDirection(worldMatrix).multiplyScalar(this.size);
 
-				v1.add( vertices[ idx ] );
-				idx = idx + 1;
+                v1.add(vertices[idx]);
+                idx = idx + 1;
 
-				vertices[ idx ].copy( v1 );
-				idx = idx + 1;
+                vertices[idx].copy(v1);
+                idx = idx + 1;
 
-			}
+            }
 
-		}
+        }
 
-		this.geometry.verticesNeedUpdate = true;
+        this.geometry.verticesNeedUpdate = true;
 
-		return this;
+        return this;
 
-	}
+    }
 
 }());

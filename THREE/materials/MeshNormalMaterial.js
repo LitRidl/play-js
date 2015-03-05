@@ -14,37 +14,37 @@
  * }
  */
 
-THREE.MeshNormalMaterial = function ( parameters ) {
+THREE.MeshNormalMaterial = function (parameters) {
 
-	THREE.Material.call( this, parameters );
+    THREE.Material.call(this, parameters);
 
-	this.type = 'MeshNormalMaterial';
+    this.type = 'MeshNormalMaterial';
 
-	this.shading = THREE.FlatShading;
+    this.shading = THREE.FlatShading;
 
-	this.wireframe = false;
-	this.wireframeLinewidth = 1;
+    this.wireframe = false;
+    this.wireframeLinewidth = 1;
 
-	this.morphTargets = false;
+    this.morphTargets = false;
 
-	this.setValues( parameters );
+    this.setValues(parameters);
 
 };
 
-THREE.MeshNormalMaterial.prototype = Object.create( THREE.Material.prototype );
+THREE.MeshNormalMaterial.prototype = Object.create(THREE.Material.prototype);
 THREE.MeshNormalMaterial.prototype.constructor = THREE.MeshNormalMaterial;
 
 THREE.MeshNormalMaterial.prototype.clone = function () {
 
-	var material = new THREE.MeshNormalMaterial();
+    var material = new THREE.MeshNormalMaterial();
 
-	THREE.Material.prototype.clone.call( this, material );
+    THREE.Material.prototype.clone.call(this, material);
 
-	material.shading = this.shading;
+    material.shading = this.shading;
 
-	material.wireframe = this.wireframe;
-	material.wireframeLinewidth = this.wireframeLinewidth;
+    material.wireframe = this.wireframe;
+    material.wireframeLinewidth = this.wireframeLinewidth;
 
-	return material;
+    return material;
 
 };

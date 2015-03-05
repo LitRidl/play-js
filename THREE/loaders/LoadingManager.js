@@ -2,39 +2,39 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.LoadingManager = function ( onLoad, onProgress, onError ) {
+THREE.LoadingManager = function (onLoad, onProgress, onError) {
 
-	var scope = this;
+    var scope = this;
 
-	var loaded = 0, total = 0;
+    var loaded = 0, total = 0;
 
-	this.onLoad = onLoad;
-	this.onProgress = onProgress;
-	this.onError = onError;
+    this.onLoad = onLoad;
+    this.onProgress = onProgress;
+    this.onError = onError;
 
-	this.itemStart = function ( url ) {
+    this.itemStart = function (url) {
 
-		total ++;
+        total++;
 
-	};
+    };
 
-	this.itemEnd = function ( url ) {
+    this.itemEnd = function (url) {
 
-		loaded ++;
+        loaded++;
 
-		if ( scope.onProgress !== undefined ) {
+        if (scope.onProgress !== undefined) {
 
-			scope.onProgress( url, loaded, total );
+            scope.onProgress(url, loaded, total);
 
-		}
+        }
 
-		if ( loaded === total && scope.onLoad !== undefined ) {
+        if (loaded === total && scope.onLoad !== undefined) {
 
-			scope.onLoad();
+            scope.onLoad();
 
-		}
+        }
 
-	};
+    };
 
 };
 

@@ -2,23 +2,23 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.RawShaderMaterial = function ( parameters ) {
+THREE.RawShaderMaterial = function (parameters) {
 
-	THREE.ShaderMaterial.call( this, parameters );
+    THREE.ShaderMaterial.call(this, parameters);
 
-	this.type = 'RawShaderMaterial';
+    this.type = 'RawShaderMaterial';
 
 };
 
-THREE.RawShaderMaterial.prototype = Object.create( THREE.ShaderMaterial.prototype );
+THREE.RawShaderMaterial.prototype = Object.create(THREE.ShaderMaterial.prototype);
 THREE.RawShaderMaterial.prototype.constructor = THREE.RawShaderMaterial;
 
 THREE.RawShaderMaterial.prototype.clone = function () {
 
-	var material = new THREE.RawShaderMaterial();
+    var material = new THREE.RawShaderMaterial();
 
-	THREE.ShaderMaterial.prototype.clone.call( this, material );
+    THREE.ShaderMaterial.prototype.clone.call(this, material);
 
-	return material;
+    return material;
 
 };

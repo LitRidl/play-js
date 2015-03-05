@@ -1,187 +1,187 @@
 /**
  * @author alteredq / http://alteredqualia.com/
  *
- *	- shows frustum, line of sight and up of the camera
- *	- suitable for fast updates
- * 	- based on frustum visualization in lightgl.js shadowmap example
- *		http://evanw.github.com/lightgl.js/tests/shadowmap.html
+ *    - shows frustum, line of sight and up of the camera
+ *    - suitable for fast updates
+ *    - based on frustum visualization in lightgl.js shadowmap example
+ *        http://evanw.github.com/lightgl.js/tests/shadowmap.html
  */
 
-THREE.CameraHelper = function ( camera ) {
+THREE.CameraHelper = function (camera) {
 
-	var geometry = new THREE.Geometry();
-	var material = new THREE.LineBasicMaterial( { color: 0xffffff, vertexColors: THREE.FaceColors } );
+    var geometry = new THREE.Geometry();
+    var material = new THREE.LineBasicMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors });
 
-	var pointMap = {};
+    var pointMap = {};
 
-	// colors
+    // colors
 
-	var hexFrustum = 0xffaa00;
-	var hexCone = 0xff0000;
-	var hexUp = 0x00aaff;
-	var hexTarget = 0xffffff;
-	var hexCross = 0x333333;
+    var hexFrustum = 0xffaa00;
+    var hexCone = 0xff0000;
+    var hexUp = 0x00aaff;
+    var hexTarget = 0xffffff;
+    var hexCross = 0x333333;
 
-	// near
+    // near
 
-	addLine( "n1", "n2", hexFrustum );
-	addLine( "n2", "n4", hexFrustum );
-	addLine( "n4", "n3", hexFrustum );
-	addLine( "n3", "n1", hexFrustum );
+    addLine("n1", "n2", hexFrustum);
+    addLine("n2", "n4", hexFrustum);
+    addLine("n4", "n3", hexFrustum);
+    addLine("n3", "n1", hexFrustum);
 
-	// far
+    // far
 
-	addLine( "f1", "f2", hexFrustum );
-	addLine( "f2", "f4", hexFrustum );
-	addLine( "f4", "f3", hexFrustum );
-	addLine( "f3", "f1", hexFrustum );
+    addLine("f1", "f2", hexFrustum);
+    addLine("f2", "f4", hexFrustum);
+    addLine("f4", "f3", hexFrustum);
+    addLine("f3", "f1", hexFrustum);
 
-	// sides
+    // sides
 
-	addLine( "n1", "f1", hexFrustum );
-	addLine( "n2", "f2", hexFrustum );
-	addLine( "n3", "f3", hexFrustum );
-	addLine( "n4", "f4", hexFrustum );
+    addLine("n1", "f1", hexFrustum);
+    addLine("n2", "f2", hexFrustum);
+    addLine("n3", "f3", hexFrustum);
+    addLine("n4", "f4", hexFrustum);
 
-	// cone
+    // cone
 
-	addLine( "p", "n1", hexCone );
-	addLine( "p", "n2", hexCone );
-	addLine( "p", "n3", hexCone );
-	addLine( "p", "n4", hexCone );
+    addLine("p", "n1", hexCone);
+    addLine("p", "n2", hexCone);
+    addLine("p", "n3", hexCone);
+    addLine("p", "n4", hexCone);
 
-	// up
+    // up
 
-	addLine( "u1", "u2", hexUp );
-	addLine( "u2", "u3", hexUp );
-	addLine( "u3", "u1", hexUp );
+    addLine("u1", "u2", hexUp);
+    addLine("u2", "u3", hexUp);
+    addLine("u3", "u1", hexUp);
 
-	// target
+    // target
 
-	addLine( "c", "t", hexTarget );
-	addLine( "p", "c", hexCross );
+    addLine("c", "t", hexTarget);
+    addLine("p", "c", hexCross);
 
-	// cross
+    // cross
 
-	addLine( "cn1", "cn2", hexCross );
-	addLine( "cn3", "cn4", hexCross );
+    addLine("cn1", "cn2", hexCross);
+    addLine("cn3", "cn4", hexCross);
 
-	addLine( "cf1", "cf2", hexCross );
-	addLine( "cf3", "cf4", hexCross );
+    addLine("cf1", "cf2", hexCross);
+    addLine("cf3", "cf4", hexCross);
 
-	function addLine( a, b, hex ) {
+    function addLine(a, b, hex) {
 
-		addPoint( a, hex );
-		addPoint( b, hex );
+        addPoint(a, hex);
+        addPoint(b, hex);
 
-	}
+    }
 
-	function addPoint( id, hex ) {
+    function addPoint(id, hex) {
 
-		geometry.vertices.push( new THREE.Vector3() );
-		geometry.colors.push( new THREE.Color( hex ) );
+        geometry.vertices.push(new THREE.Vector3());
+        geometry.colors.push(new THREE.Color(hex));
 
-		if ( pointMap[ id ] === undefined ) {
+        if (pointMap[id] === undefined) {
 
-			pointMap[ id ] = [];
+            pointMap[id] = [];
 
-		}
+        }
 
-		pointMap[ id ].push( geometry.vertices.length - 1 );
+        pointMap[id].push(geometry.vertices.length - 1);
 
-	}
+    }
 
-	THREE.Line.call( this, geometry, material, THREE.LinePieces );
+    THREE.Line.call(this, geometry, material, THREE.LinePieces);
 
-	this.camera = camera;
-	this.matrix = camera.matrixWorld;
-	this.matrixAutoUpdate = false;
+    this.camera = camera;
+    this.matrix = camera.matrixWorld;
+    this.matrixAutoUpdate = false;
 
-	this.pointMap = pointMap;
+    this.pointMap = pointMap;
 
-	this.update();
+    this.update();
 
 };
 
-THREE.CameraHelper.prototype = Object.create( THREE.Line.prototype );
+THREE.CameraHelper.prototype = Object.create(THREE.Line.prototype);
 THREE.CameraHelper.prototype.constructor = THREE.CameraHelper;
 
 THREE.CameraHelper.prototype.update = function () {
 
-	var geometry, pointMap;
-	
-	var vector = new THREE.Vector3();
-	var camera = new THREE.Camera();
+    var geometry, pointMap;
 
-	var setPoint = function ( point, x, y, z ) {
+    var vector = new THREE.Vector3();
+    var camera = new THREE.Camera();
 
-		vector.set( x, y, z ).unproject( camera );
+    var setPoint = function (point, x, y, z) {
 
-		var points = pointMap[ point ];
+        vector.set(x, y, z).unproject(camera);
 
-		if ( points !== undefined ) {
+        var points = pointMap[point];
 
-			for ( var i = 0, il = points.length; i < il; i ++ ) {
+        if (points !== undefined) {
 
-				geometry.vertices[ points[ i ] ].copy( vector );
+            for (var i = 0, il = points.length; i < il; i++) {
 
-			}
+                geometry.vertices[points[i]].copy(vector);
 
-		}
+            }
 
-	};
+        }
 
-	return function () {
+    };
 
-		geometry = this.geometry;
-		pointMap = this.pointMap;
+    return function () {
 
-		var w = 1, h = 1;
+        geometry = this.geometry;
+        pointMap = this.pointMap;
 
-		// we need just camera projection matrix
-		// world matrix must be identity
+        var w = 1, h = 1;
 
-		camera.projectionMatrix.copy( this.camera.projectionMatrix );
+        // we need just camera projection matrix
+        // world matrix must be identity
 
-		// center / target
+        camera.projectionMatrix.copy(this.camera.projectionMatrix);
 
-		setPoint( "c", 0, 0, - 1 );
-		setPoint( "t", 0, 0,  1 );
+        // center / target
 
-		// near
+        setPoint("c", 0, 0, -1);
+        setPoint("t", 0, 0, 1);
 
-		setPoint( "n1", - w, - h, - 1 );
-		setPoint( "n2",   w, - h, - 1 );
-		setPoint( "n3", - w,   h, - 1 );
-		setPoint( "n4",   w,   h, - 1 );
+        // near
 
-		// far
+        setPoint("n1", -w, -h, -1);
+        setPoint("n2", w, -h, -1);
+        setPoint("n3", -w, h, -1);
+        setPoint("n4", w, h, -1);
 
-		setPoint( "f1", - w, - h, 1 );
-		setPoint( "f2",   w, - h, 1 );
-		setPoint( "f3", - w,   h, 1 );
-		setPoint( "f4",   w,   h, 1 );
+        // far
 
-		// up
+        setPoint("f1", -w, -h, 1);
+        setPoint("f2", w, -h, 1);
+        setPoint("f3", -w, h, 1);
+        setPoint("f4", w, h, 1);
 
-		setPoint( "u1",   w * 0.7, h * 1.1, - 1 );
-		setPoint( "u2", - w * 0.7, h * 1.1, - 1 );
-		setPoint( "u3",         0, h * 2,   - 1 );
+        // up
 
-		// cross
+        setPoint("u1", w * 0.7, h * 1.1, -1);
+        setPoint("u2", -w * 0.7, h * 1.1, -1);
+        setPoint("u3", 0, h * 2, -1);
 
-		setPoint( "cf1", - w,   0, 1 );
-		setPoint( "cf2",   w,   0, 1 );
-		setPoint( "cf3",   0, - h, 1 );
-		setPoint( "cf4",   0,   h, 1 );
+        // cross
 
-		setPoint( "cn1", - w,   0, - 1 );
-		setPoint( "cn2",   w,   0, - 1 );
-		setPoint( "cn3",   0, - h, - 1 );
-		setPoint( "cn4",   0,   h, - 1 );
+        setPoint("cf1", -w, 0, 1);
+        setPoint("cf2", w, 0, 1);
+        setPoint("cf3", 0, -h, 1);
+        setPoint("cf4", 0, h, 1);
 
-		geometry.verticesNeedUpdate = true;
+        setPoint("cn1", -w, 0, -1);
+        setPoint("cn2", w, 0, -1);
+        setPoint("cn3", 0, -h, -1);
+        setPoint("cn4", 0, h, -1);
 
-	};
+        geometry.verticesNeedUpdate = true;
+
+    };
 
 }();

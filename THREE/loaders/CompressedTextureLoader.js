@@ -6,121 +6,120 @@
 
 THREE.CompressedTextureLoader = function () {
 
-	// override in sub classes
-	this._parser = null;
+    // override in sub classes
+    this._parser = null;
 
 };
 
-
 THREE.CompressedTextureLoader.prototype = {
 
-	constructor: THREE.CompressedTextureLoader,
+    constructor: THREE.CompressedTextureLoader,
 
-	load: function ( url, onLoad, onError ) {
+    load: function (url, onLoad, onError) {
 
-		var scope = this;
+        var scope = this;
 
-		var images = [];
+        var images = [];
 
-		var texture = new THREE.CompressedTexture();
-		texture.image = images;
+        var texture = new THREE.CompressedTexture();
+        texture.image = images;
 
-		var loader = new THREE.XHRLoader();
-		loader.setResponseType( 'arraybuffer' );
+        var loader = new THREE.XHRLoader();
+        loader.setResponseType('arraybuffer');
 
-		if ( url instanceof Array ) {
+        if (url instanceof Array) {
 
-			var loaded = 0;
+            var loaded = 0;
 
-			var loadTexture = function ( i ) {
+            var loadTexture = function (i) {
 
-				loader.load( url[ i ], function ( buffer ) {
+                loader.load(url[i], function (buffer) {
 
-					var texDatas = scope._parser( buffer, true );
+                    var texDatas = scope._parser(buffer, true);
 
-					images[ i ] = {
-						width: texDatas.width,
-						height: texDatas.height,
-						format: texDatas.format,
-						mipmaps: texDatas.mipmaps
-					};
+                    images[i] = {
+                        width: texDatas.width,
+                        height: texDatas.height,
+                        format: texDatas.format,
+                        mipmaps: texDatas.mipmaps
+                    };
 
-					loaded += 1;
+                    loaded += 1;
 
-					if ( loaded === 6 ) {
+                    if (loaded === 6) {
 
- 						if (texDatas.mipmapCount == 1)
- 							texture.minFilter = THREE.LinearFilter;
+                        if (texDatas.mipmapCount == 1)
+                            texture.minFilter = THREE.LinearFilter;
 
-						texture.format = texDatas.format;
-						texture.needsUpdate = true;
+                        texture.format = texDatas.format;
+                        texture.needsUpdate = true;
 
-						if ( onLoad ) onLoad( texture );
+                        if (onLoad) onLoad(texture);
 
-					}
+                    }
 
-				} );
+                });
 
-			};
+            };
 
-			for ( var i = 0, il = url.length; i < il; ++ i ) {
+            for (var i = 0, il = url.length; i < il; ++i) {
 
-				loadTexture( i );
+                loadTexture(i);
 
-			}
+            }
 
-		} else {
+        } else {
 
-			// compressed cubemap texture stored in a single DDS file
+            // compressed cubemap texture stored in a single DDS file
 
-			loader.load( url, function ( buffer ) {
+            loader.load(url, function (buffer) {
 
-				var texDatas = scope._parser( buffer, true );
+                var texDatas = scope._parser(buffer, true);
 
-				if ( texDatas.isCubemap ) {
+                if (texDatas.isCubemap) {
 
-					var faces = texDatas.mipmaps.length / texDatas.mipmapCount;
+                    var faces = texDatas.mipmaps.length / texDatas.mipmapCount;
 
-					for ( var f = 0; f < faces; f ++ ) {
+                    for (var f = 0; f < faces; f++) {
 
-						images[ f ] = { mipmaps : [] };
+                        images[f] = { mipmaps: [] };
 
-						for ( var i = 0; i < texDatas.mipmapCount; i ++ ) {
+                        for (var i = 0; i < texDatas.mipmapCount; i++) {
 
-							images[ f ].mipmaps.push( texDatas.mipmaps[ f * texDatas.mipmapCount + i ] );
-							images[ f ].format = texDatas.format;
-							images[ f ].width = texDatas.width;
-							images[ f ].height = texDatas.height;
+                            images[f].mipmaps.push(texDatas.mipmaps[f * texDatas.mipmapCount + i]);
+                            images[f].format = texDatas.format;
+                            images[f].width = texDatas.width;
+                            images[f].height = texDatas.height;
 
-						}
+                        }
 
-					}
+                    }
 
-				} else {
+                } else {
 
-					texture.image.width = texDatas.width;
-					texture.image.height = texDatas.height;
-					texture.mipmaps = texDatas.mipmaps;
+                    texture.image.width = texDatas.width;
+                    texture.image.height = texDatas.height;
+                    texture.mipmaps = texDatas.mipmaps;
 
-				}
+                }
 
-				if ( texDatas.mipmapCount === 1 ) {
+                if (texDatas.mipmapCount === 1) {
 
-					texture.minFilter = THREE.LinearFilter;
+                    texture.minFilter = THREE.LinearFilter;
 
-				}
+                }
 
-				texture.format = texDatas.format;
-				texture.needsUpdate = true;
+                texture.format = texDatas.format;
+                texture.needsUpdate = true;
 
-				if ( onLoad ) onLoad( texture );
+                if (onLoad) onLoad(texture);
 
-			} );
+            });
 
-		}
+        }
 
-		return texture;
+        return texture;
 
-	}
+    }
 
 };

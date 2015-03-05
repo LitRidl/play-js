@@ -3,26 +3,26 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.AreaLight = function ( color, intensity ) {
+THREE.AreaLight = function (color, intensity) {
 
-	THREE.Light.call( this, color );
+    THREE.Light.call(this, color);
 
-	this.type = 'AreaLight';
+    this.type = 'AreaLight';
 
-	this.normal = new THREE.Vector3( 0, - 1, 0 );
-	this.right = new THREE.Vector3( 1, 0, 0 );
+    this.normal = new THREE.Vector3(0, -1, 0);
+    this.right = new THREE.Vector3(1, 0, 0);
 
-	this.intensity = ( intensity !== undefined ) ? intensity : 1;
+    this.intensity = ( intensity !== undefined ) ? intensity : 1;
 
-	this.width = 1.0;
-	this.height = 1.0;
+    this.width = 1.0;
+    this.height = 1.0;
 
-	this.constantAttenuation = 1.5;
-	this.linearAttenuation = 0.5;
-	this.quadraticAttenuation = 0.1;
+    this.constantAttenuation = 1.5;
+    this.linearAttenuation = 0.5;
+    this.quadraticAttenuation = 0.1;
 
 };
 
-THREE.AreaLight.prototype = Object.create( THREE.Light.prototype );
+THREE.AreaLight.prototype = Object.create(THREE.Light.prototype);
 THREE.AreaLight.prototype.constructor = THREE.AreaLight;
 

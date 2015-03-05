@@ -17,41 +17,41 @@
  * }
  */
 
-THREE.SpriteMaterial = function ( parameters ) {
+THREE.SpriteMaterial = function (parameters) {
 
-	THREE.Material.call( this );
+    THREE.Material.call(this);
 
-	this.type = 'SpriteMaterial';
+    this.type = 'SpriteMaterial';
 
-	this.color = new THREE.Color( 0xffffff );
-	this.map = null;
+    this.color = new THREE.Color(0xffffff);
+    this.map = null;
 
-	this.rotation = 0;
+    this.rotation = 0;
 
-	this.fog = false;
+    this.fog = false;
 
-	// set parameters
+    // set parameters
 
-	this.setValues( parameters );
+    this.setValues(parameters);
 
 };
 
-THREE.SpriteMaterial.prototype = Object.create( THREE.Material.prototype );
+THREE.SpriteMaterial.prototype = Object.create(THREE.Material.prototype);
 THREE.SpriteMaterial.prototype.constructor = THREE.SpriteMaterial;
 
 THREE.SpriteMaterial.prototype.clone = function () {
 
-	var material = new THREE.SpriteMaterial();
+    var material = new THREE.SpriteMaterial();
 
-	THREE.Material.prototype.clone.call( this, material );
+    THREE.Material.prototype.clone.call(this, material);
 
-	material.color.copy( this.color );
-	material.map = this.map;
+    material.color.copy(this.color);
+    material.map = this.map;
 
-	material.rotation = this.rotation;
+    material.rotation = this.rotation;
 
-	material.fog = this.fog;
+    material.fog = this.fog;
 
-	return material;
+    return material;
 
 };

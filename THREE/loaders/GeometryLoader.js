@@ -2,63 +2,63 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.GeometryLoader = function ( manager ) {
+THREE.GeometryLoader = function (manager) {
 
-	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
+    this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
 
 };
 
 THREE.GeometryLoader.prototype = {
 
-	constructor: THREE.GeometryLoader,
+    constructor: THREE.GeometryLoader,
 
-	load: function ( url, onLoad, onProgress, onError ) {
+    load: function (url, onLoad, onProgress, onError) {
 
-		var scope = this;
+        var scope = this;
 
-		var loader = new THREE.XHRLoader();
-		loader.setCrossOrigin( this.crossOrigin );
-		loader.load( url, function ( text ) {
+        var loader = new THREE.XHRLoader();
+        loader.setCrossOrigin(this.crossOrigin);
+        loader.load(url, function (text) {
 
-			onLoad( scope.parse( JSON.parse( text ) ) );
+            onLoad(scope.parse(JSON.parse(text)));
 
-		}, onProgress, onError );
+        }, onProgress, onError);
 
-	},
+    },
 
-	setCrossOrigin: function ( value ) {
+    setCrossOrigin: function (value) {
 
-		this.crossOrigin = value;
+        this.crossOrigin = value;
 
-	},
+    },
 
-	parse: function ( json ) {
+    parse: function (json) {
 
-		var geometry = new THREE.Geometry();
+        var geometry = new THREE.Geometry();
 
-		geometry.indices = json.indices;
-		geometry.vertices = json.vertices;
-		geometry.normals = json.normals;
-		geometry.uvs = json.uvs;
+        geometry.indices = json.indices;
+        geometry.vertices = json.vertices;
+        geometry.normals = json.normals;
+        geometry.uvs = json.uvs;
 
-		var boundingSphere = json.boundingSphere;
+        var boundingSphere = json.boundingSphere;
 
-		if ( boundingSphere !== undefined ) {
+        if (boundingSphere !== undefined) {
 
-			var center = new THREE.Vector3();
+            var center = new THREE.Vector3();
 
-			if ( boundingSphere.center !== undefined ) {
+            if (boundingSphere.center !== undefined) {
 
-				center.fromArray( boundingSphere.center );
+                center.fromArray(boundingSphere.center);
 
-			}
+            }
 
-			geometry.boundingSphere = new THREE.Sphere( center, boundingSphere.radius );
+            geometry.boundingSphere = new THREE.Sphere(center, boundingSphere.radius);
 
-		}
+        }
 
-		return geometry;
+        return geometry;
 
-	}
+    }
 
 };

@@ -6,7 +6,8 @@ var colors = {
     'purple': 0x955BA5,
     'dark': 0x333333,
     'white': 0xFFFFFF,
-    'black': 0x000000
+    'black': 0x000000,
+    'gray': 0xAAAAAA
 };
 
 var camera, controls, scene, renderer;
@@ -80,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loader.load("./models/asteroid2.js", function (geometry, materials) {
         asteroid1 = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
-            color: 0xAAAAAA,
+            color: colors.gray,
             shading: THREE.SmoothShading,
             map: THREE.ImageUtils.loadTexture("./images/asteroid_texture.png", {}, function () {}),
             bumpMap: THREE.ImageUtils.loadTexture("./images/asteroid_normals.png", {}, function () {}),

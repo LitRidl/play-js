@@ -82,9 +82,9 @@ ArkanoidGame.prototype.setUpLevel = function () {
 
     this.setUpPlatform();
 
-    var margin = 10,
+    var margin = 6,
         x_space_per_brick = (this.w - 2 * margin) / this.bricks_in_row,
-        y_space_per_brick = ((this.h - margin) / 4) / this.rows;
+        y_space_per_brick = ((this.h - margin) / 3) / this.rows;
 
     var x_offset = 2 * margin,
         y_offset = 2 * margin;
@@ -99,10 +99,12 @@ ArkanoidGame.prototype.setUpLevel = function () {
     }
 };
 
-ArkanoidGame.prototype.handleKeyDown = function (action) {
-    if (action == 'left' || action == 'right') {
-        this.scene.movePlatform(action);
-    } else if (action == 'interact') {
+ArkanoidGame.prototype.handleKeyDown = function (action, type) {
+    if (type == 'keydown' && (action == 'left' || action == 'right')) {
+        this.scene.movePlatform(action, type);
+    } else if (type == 'keyup' && (action == 'left' || action == 'right')) {
+        this.scene.movePlatform(action, type);
+    } else if (action == 'interact' && type == 'keyup') {
         this.scene.launchBall();
     }
 };

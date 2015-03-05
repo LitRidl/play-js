@@ -1,4 +1,4 @@
-function Scene(h, w, speed) {
+var Scene = function (h, w, speed) {
     this.bricks = [];
 
     this.platform = null;
@@ -8,8 +8,9 @@ function Scene(h, w, speed) {
     this.w = w;
 };
 
-Scene.prototype.movePlatform = function (direction) {
+Scene.prototype.movePlatform = function (direction, type) {
     var dx = 0;
+
     if (direction == 'left') {
         dx = -this.platform.speed;
     } else if (direction == 'right') {
@@ -17,16 +18,16 @@ Scene.prototype.movePlatform = function (direction) {
     }
 
     var margin = this.ball.radius / 2;
-    if (this.platform.x + dx <= 0) {
-        dx = margin - this.platform.x;
+    if (this.platform.x + dx <= margin) {
+        dx = this.platform.x - margin; // BUG? Bad collision detection
     } else if (this.platform.x + dx + this.platform.w >= this.w - margin) {
         dx = this.w - margin - this.platform.x - this.platform.w;
     }
 
-    this.platform.x += dx;
-
-    if (this.ball.sticky) {
-        this.ball.x += dx;
+    if (type == 'keydown') {
+        this.platform.vx = dx;
+    } else if (type == 'keyup') {
+        this.platform.vx = 0;
     }
 };
 
@@ -44,16 +45,27 @@ Scene.prototype.addBrick = function (brick) {
 };
 
 Scene.prototype.update = function (dt) {
-    var margin = 5;
-
     var h = this.h,
         w = this.w;
 
-    this.ball.x += this.ball.vx;
-    this.ball.y += this.ball.vy;
+    this.platform.x += this.platform.vx;
 
-    this.ball.mid_x += this.ball.vx;
-    this.ball.mid_y += this.ball.vy;
+    var ball_margin = this.ball.radius / 2;
+    if (this.platform.x <= 0) {
+        this.platform.x = ball_margin;
+    } else if (this.platform.x + this.platform.w >= this.w - ball_margin) {
+        this.platform.x = this.w - ball_margin - this.platform.w;
+    }
+
+    if (this.ball.sticky) {
+        this.ball.x = this.platform.x + this.platform.w / 2 - this.ball.radius;
+    } else {
+        this.ball.x += this.ball.vx;
+        this.ball.y += this.ball.vy;
+
+        this.ball.mid_x += this.ball.vx;
+        this.ball.mid_y += this.ball.vy;
+    }
 
     if (this.platform.isOverlapping(this.ball) && !this.ball.sticky) {
         var dx = (this.ball.x + this.ball.w / 2) - this.platform.x; // ???
@@ -67,7 +79,7 @@ Scene.prototype.update = function (dt) {
         var sidelobe_ratio = (1 - this.platform.center_ratio) / 2;
 
         if (dx_relative > sidelobe_ratio && dx_relative < sidelobe_ratio + this.platform.center_ratio) {
-            this.ball.vx *= -1;
+            this.ball.vx = (this.ball.vx + this.platform.vx) / 2;
         } else {
             var v = -(dx_relative - 0.5) * Math.PI;
             this.ball.vx = this.ball.speed * Math.cos(angle + this.platform.angular_dampening * v);
@@ -78,6 +90,8 @@ Scene.prototype.update = function (dt) {
 
     var x = this.ball.x + this.ball.w / 2,
         y = this.ball.y + this.ball.h / 2;
+
+    var margin = 5;
 
     if (x <= margin + this.ball.radius || x >= w - this.ball.radius - margin) {
         this.ball.vx = -this.ball.vx;

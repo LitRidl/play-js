@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
         fps: 60,
         speed: 3,
 
-        rows: 3,
-        bricks_in_row: 6,
+        rows: 4,
+        bricks_in_row: 11,
         balls: 3,
         score_color: colors.black,
 
@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
         platform_height: 20,
         platform_color: colors.dark,
         platform_side_color: colors.purple,
-        platform_center_ratio: 0.6, // % of platform = elastic collision
-        platform_speed: 25,
+        platform_center_ratio: 0.7, // % of platform = elastic collision
+        platform_speed: 5,
 
         ball_radius: 17,
         ball_color: colors.red,
@@ -74,9 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var keydownHandler = function (e) {
         e.preventDefault();
-        this.handleKeyDown(getActionFor(e.which));
+        this.handleKeyDown(getActionFor(e.which), e.type);
     };
 
     document.addEventListener("keydown", keydownHandler.bind(game));
+    document.addEventListener("keyup", keydownHandler.bind(game));
     //canvas.addEventListener("click", keydownHandler.bind(game));
 });

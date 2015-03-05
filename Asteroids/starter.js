@@ -78,15 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var loader = new THREE.JSONLoader();
 
-    loader.load("./models/asteroid.js", function (geometry, materials) {
-        asteroid1 = new THREE.Mesh(new THREE.SphereGeometry(1, 15, 15), new THREE.MeshLambertMaterial({
-            color: colors.dark,
+    loader.load("./models/asteroid2.js", function (geometry, materials) {
+        asteroid1 = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+            color: 0xAAAAAA,
             shading: THREE.SmoothShading,
             map: THREE.ImageUtils.loadTexture("./images/asteroid_texture.png", {}, function () {}),
             bumpMap: THREE.ImageUtils.loadTexture("./images/asteroid_normals.png", {}, function () {}),
             bumpScale: 0.9
         }));
-        //asteroid1.scale.set(3, 3, 3);
+        asteroid1.scale.set(10, 10, 10);
 
         setUpScene();
         gameLoop();

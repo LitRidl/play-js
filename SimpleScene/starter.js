@@ -132,12 +132,12 @@ var setUpScene = function () {
 
         renderer.render(scene, camera);
     }, false);
-}
+};
 
 var gameLoop = function () {
     requestAnimationFrame(gameLoop);
     controls.update();
-}
+};
 
 document.addEventListener("DOMContentLoaded", function () {
     setUpScene();

@@ -10,76 +10,11 @@ var colors = {
 };
 
 var camera, controls, scene, renderer;
-
-var meshes = [
-    {
-        g: new THREE.CylinderGeometry(0, 10, 30, 4, 1),
-        m: new THREE.MeshLambertMaterial({
-            color: 0xffffff,
-            shading: THREE.FlatShading,
-            map: THREE.ImageUtils.loadTexture("./images/marble.jpg", {}, function(){})
-        })
-    },
-    {
-        g: new THREE.TorusGeometry(10, 5, 16, 32),
-        m: new THREE.MeshPhongMaterial({ color: colors.green, shading: THREE.SmoothShading, shininess: 60 })
-    },
-    {
-        g: new THREE.TorusKnotGeometry(15, 5, 64, 8),
-        m: new THREE.MeshPhongMaterial({ color: colors.purple,
-            shading: THREE.SmoothShading,
-            shininess: 60,
-            map: THREE.ImageUtils.loadTexture("./images/marble.jpg", {}, function(){})
-        })
-    },
-    {
-        g: new THREE.SphereGeometry(20, 64, 64),
-        m: new THREE.MeshLambertMaterial({ color: colors.red, shading: THREE.SmoothShading})
-    },
-    {
-        g: new THREE.ParametricGeometry(function (u, v) {
-            var r = 50;
-            var x = Math.sin(u) * r;
-            var z = Math.sin(v / 2) * 2 * r;
-            var y = (Math.sin(u * 4 * Math.PI) + Math.cos(v * 2 * Math.PI)) * 2.8;
-            return new THREE.Vector3(x, y, z);
-        }, 120, 120),
-        m: new THREE.MeshLambertMaterial({
-            color: colors.blue,
-            shading: THREE.SmoothShading,
-            map: THREE.ImageUtils.loadTexture("./images/friz.png", {}, function(){}),
-            bumpScale: 0.45
-        })
-    }
-];
-
-meshes[4].m.side = THREE.DoubleSide;
-
-// var loader = new THREE.JSONLoader();
-// var pumpkin, teapot;
-
-// loader.load("./models/pumpkin.js", function(geometry, materials) {
-//     pumpkin = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
-//     pumpkin.scale.set(.3, .3, .3);
-// });
-
-// loader.load("./models/teapot.js", function(geometry, materials) {
-//     teapot = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: colors.green, shading: THREE.SmoothShading, shininess: 60 }));
-//     teapot.scale.set(4, 4, 4);
-// });
-
-var createRandomMesh = function () {
-    var choice = Math.floor(Math.random() * meshes.length);
-
-    var geometry = meshes[choice].g; // new THREE.CylinderGeometry(0, 10, 30, 4, 1);
-    var material = meshes[choice].m; // new THREE.MeshLambertMaterial({ color: 0xffffff, shading: THREE.FlatShading });
-
-    return new THREE.Mesh(geometry, material);
-};
+var asteroid1;
 
 var setUpScene = function () {
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.z = 500;
+    camera.position.z = 5;
 
     controls = new THREE.OrbitControls(camera);
     controls.addEventListener('change', function () {
@@ -91,11 +26,11 @@ var setUpScene = function () {
 
     // world
     for (var i = 0; i < 500; i++) {
-        var mesh = createRandomMesh();
+        var mesh = asteroid1;
 
-        mesh.position.x = (Math.random() - 0.5) * 1000;
-        mesh.position.y = (Math.random() - 0.5) * 1000;
-        mesh.position.z = (Math.random() - 0.5) * 1000;
+        mesh.position.x = 0; //(Math.random() - 0.5) * 1000;
+        mesh.position.y = 0; //(Math.random() - 0.5) * 1000;
+        mesh.position.z = 0; //(Math.random() - 0.5) * 1000;
 
         //mesh.rotation.
 
@@ -140,6 +75,20 @@ var gameLoop = function () {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    setUpScene();
-    gameLoop();
+
+    var loader = new THREE.JSONLoader();
+
+    loader.load("./models/asteroid.js", function (geometry, materials) {
+        asteroid1 = new THREE.Mesh(new THREE.SphereGeometry(1, 15, 15), new THREE.MeshLambertMaterial({
+            color: colors.dark,
+            shading: THREE.SmoothShading,
+            map: THREE.ImageUtils.loadTexture("./images/asteroid_texture.png", {}, function () {}),
+            bumpMap: THREE.ImageUtils.loadTexture("./images/asteroid_normals.png", {}, function () {}),
+            bumpScale: 0.9
+        }));
+        //asteroid1.scale.set(3, 3, 3);
+
+        setUpScene();
+        gameLoop();
+    });
 });

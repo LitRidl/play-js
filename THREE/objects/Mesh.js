@@ -1,10 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- * @author alteredq / http://alteredqualia.com/
- * @author mikael emtinger / http://gomo.se/
- * @author jonobr1 / http://jonobr1.com/
- */
-
 THREE.Mesh = function (geometry, material) {
 
     THREE.Object3D.call(this);

@@ -1,7 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 THREE.Scene = function () {
 
     THREE.Object3D.call(this);

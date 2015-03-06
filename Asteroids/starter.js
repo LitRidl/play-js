@@ -10,12 +10,48 @@ var colors = {
     'gray': 0xAAAAAA
 };
 
+// x is red, y is green, z is blue
+var buildAxes = function (length) {
+    var buildAxis = function (src, dst, colorHex, dashed) {
+        var geom = new THREE.Geometry(),
+            mat;
+
+        if (dashed) {
+            mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 3, gapSize: 3 });
+        } else {
+            mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+        }
+
+        geom.vertices.push(src.clone());
+        geom.vertices.push(dst.clone());
+        geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
+
+        var axis = new THREE.Line(geom, mat, THREE.LinePieces);
+
+        return axis;
+
+    };
+    var axes = new THREE.Object3D();
+
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(length, 0, 0), 0xFF0000, false)); // +X
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(-length, 0, 0), 0xFF0000, true)); // -X
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, length, 0), 0x00FF00, false)); // +Y
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -length, 0), 0x00FF00, true)); // -Y
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, length), 0x0000FF, false)); // +Z
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -length), 0x0000FF, true)); // -Z
+
+    return axes;
+};
+
 var camera, controls, scene, renderer;
 var asteroid1;
 
 var setUpScene = function () {
-    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.z = 5;
+    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 1000);
+
+    camera.position.x = 50;
+    camera.position.y = 50;
+    camera.position.z = 0;
 
     controls = new THREE.OrbitControls(camera);
     controls.addEventListener('change', function () {
@@ -23,15 +59,22 @@ var setUpScene = function () {
     });
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+
+    scene.add(buildAxes(100));
+
+    scene.fog = new THREE.FogExp2(0x0A0A0A, 0.002);
 
     // world
     for (var i = 0; i < 500; i++) {
-        var mesh = asteroid1;
+        var mesh = asteroid1.clone();
 
-        mesh.position.x = 0; //(Math.random() - 0.5) * 1000;
-        mesh.position.y = 0; //(Math.random() - 0.5) * 1000;
-        mesh.position.z = 0; //(Math.random() - 0.5) * 1000;
+        asteroid1.scale.set(10 + (Math.random() - 0.5) * 8,
+                            10 + (Math.random() - 0.5) * 8,
+                            10 + (Math.random() - 0.5) * 8);
+
+        mesh.position.x = (Math.random() - 0.5) * 100;
+        mesh.position.y = (Math.random() - 0.5) * 5;
+        mesh.position.z = Math.random() * 100;
 
         //mesh.rotation.
 
@@ -87,7 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
             bumpMap: THREE.ImageUtils.loadTexture("./images/asteroid_normals.png", {}, function () {}),
             bumpScale: 0.9
         }));
-        asteroid1.scale.set(10, 10, 10);
 
         setUpScene();
         gameLoop();

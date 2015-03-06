@@ -2,7 +2,7 @@
 Простая 2D-графика и физика на HTML5 canvas и WebGL.
 
 ## Инструкция
-1. git@github.com:LitRidl/play-js.git
+1. git clone git@github.com:LitRidl/play-js.git
 2. Перейти в директорию (cd play-js) и запустить статик-сервер python -m SimpleHTTPServer
 2. Открыть в браузере http://localhost:8000/
 3. Осуществить навигацию по демонстрациям путём последовательного перехода по ссылкам.

@@ -2,7 +2,7 @@ var loaded = false, pause = false;
 var level = 0, healthIncrease = 5;
 var up, down, left, right;
 var adjmovement = 1, fulldirectiontest;
-var playingBoardSize = 500;
+var playingBoardSize = 1500;
 var height = playingBoardSize + 200, width = playingBoardSize + (200 * (window.innerWidth / window.innerHeight));// additional for camera extend - fullsize of board
 var movex = 0, movez = 0, movey = 0, particleSystem, enemies = [], playerGraphic, explosionSystem, engine, camera, time, scene, light0, skybox, skyboxMaterial;
 var player, playerStats, rock, rock2, cup, enemyexplosion, bulletobj, box, lastSetup, xpmessage, particleTexture;
@@ -96,7 +96,7 @@ function Player() {
     jetSystem.targetStopDuration = 0;
     jetSystem.minEmitPower = 1;
     jetSystem.maxEmitPower = 3;
-    jetSystem.updateSpeed = 0.005;
+    jetSystem.updateSpeed = 0.003;
     jetSystem.disposeOnStop = false;
     jetSystem.start();
 
@@ -109,13 +109,13 @@ function Player() {
         this.currentLevelStats = levelingDefs[this.shipLevel];
         LevelUpDetails.innerHTML = "";
         if (this.speed < this.currentLevelStats.speed) {
-            LevelUpDetails.innerHTML += " + Ship Speed";
+            LevelUpDetails.innerHTML += " +Speed";
         }
         if (this.health < this.currentLevelStats.health) {
-            LevelUpDetails.innerHTML += " + Health";
+            LevelUpDetails.innerHTML += " +Health";
         }
         if (this.bulletDamage < this.currentLevelStats.damage) {
-            LevelUpDetails.innerHTML += " + Damage";
+            LevelUpDetails.innerHTML += " +Damage";
         }
         this.speed = this.currentLevelStats.speed;
         this.health = this.currentLevelStats.health;

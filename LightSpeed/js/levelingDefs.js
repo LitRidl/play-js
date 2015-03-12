@@ -1,5 +1,5 @@
 var levelingDefs = [
-    { need: 100, health: 100, speed: 1, damage: 25 }, { need: 250, health: 205, speed: 1, damage: 26 }, {
+    { need: 100, health: 100, speed: 0.8, damage: 25 }, { need: 250, health: 205, speed: 1, damage: 26 }, {
         need: 450,
         health: 315,
         speed: 1,

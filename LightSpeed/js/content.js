@@ -139,12 +139,13 @@ function ContentLoad(startDisplay) {
         minematerial.diffuseTexture.uScale = .5;
         minematerial.diffuseTexture.vScale = .5;
 
-        var backgroundSystem = new BABYLON.Mesh.CreatePlane("background", 3000, scene);
+        var backgroundSystem = new BABYLON.Mesh.CreatePlane("background", 5000, scene);
         backgroundSystem.material = backmaterial;//new BABYLON.StandardMaterial("backgroundmat", scene);
         backgroundSystem.rotation.y = Math.PI;
         backgroundSystem.rotation.x = Math.PI / 2;
         backgroundSystem.rotation.z = Math.PI * 1.5;
         backgroundSystem.position.y = -700;
+        //backgroundSystem.position.z = 2500;
         //player = new Player();
         //camera.target = player.BoundingBox.position;
         BABYLON.SceneLoader.ImportMesh("", "", "assets/a6.babylon", scene, function (newMeshes, particleSystems) {

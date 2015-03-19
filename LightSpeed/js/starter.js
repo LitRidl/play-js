@@ -6,6 +6,7 @@ var playingBoardSize = 1500;
 var height = playingBoardSize + 200, width = playingBoardSize + (200 * (window.innerWidth / window.innerHeight));// additional for camera extend - fullsize of board
 var movex = 0, movez = 0, movey = 0, particleSystem, enemies = [], playerGraphic, explosionSystem, engine, camera, time, scene, light0, skybox, skyboxMaterial;
 var player, playerStats, rock, rock2, cup, enemyexplosion, bulletobj, box, lastSetup, xpmessage, particleTexture;
+var axis_y = false;
 
 var canvas = document.getElementById("viewport");
 var lightSpeedGauge = document.getElementById('lightspeedGauge');
@@ -33,7 +34,6 @@ function SceneReset() {
     LevelText.innerHTML = level;
     camera.target = player.cameraFollower.position;
     player.reset();
-
 }
 
 function StartGame() {
@@ -60,7 +60,7 @@ function Player() {
     this.bulletSpeed = 2;
     this.bulletDamage = this.currentLevelStats.damage;
     var bulletsshot = 0;
-    this.currentDirection = "left";
+    this.currentDirection = "up"; // was "left"
     this.bullet = [];
 
     lightSpeedGauge.style.width = 0;
@@ -134,8 +134,9 @@ function Player() {
         this.BoundingBox.position = new BABYLON.Vector3(0, 0, 0);
         this.Graphic.position = new BABYLON.Vector3(0, 0, 0);
         this.Graphic.rotation.x = 0;
-        this.Graphic.rotation.y = 0;
-        this.currentDirection = "left";
+        //this.Graphic.rotation.y = 0;
+        this.Graphic.rotation.y = Math.PI / 2;
+        this.currentDirection = "up"; // was "left"
         movex = 0, movez = 0, movey = 0;
         this.status = true;
         this.Graphic._isEnabled = true;
@@ -298,7 +299,9 @@ function Player() {
         if (this.Resources >= nextlvlneed) {
             this.levelUp();
         }
+
         ////////////player movement
+        var plus_dx = 0;
         if (up && right) {
             this.Graphic.rotation.y = Math.PI * .75; //up-and-right
             this.currentDirection = "upright";
@@ -320,25 +323,39 @@ function Player() {
             this.currentDirection = "up";
         }
         else if (down) {
-            this.Graphic.rotation.y = Math.PI * 1.5;
+            //this.Graphic.rotation.y = Math.PI * 1.5;
             this.currentDirection = "down";
         }
+        else if (up && axis_y) {
+            movey = 1;
+            //this.Graphic.rotation.y = Math.PI / 2;
+            //this.currentDirection = "up";
+        }
+        else if (down && axis_y) {
+            movey = -1;
+            //this.Graphic.rotation.y = Math.PI * 1.5;
+            //this.currentDirection = "down";
+        }
         else if (left) {
-            this.Graphic.rotation.y = 0;
+            this.Graphic.rotation.y = 1 * Math.PI / 10; // Was 0
             this.currentDirection = "left";
         }
         else if (right) {
-            this.Graphic.rotation.y = Math.PI;
+            this.Graphic.rotation.y = 9 * Math.PI / 10; // Was Math.PI
             this.currentDirection = "right";
         }
         movez = Math.cos(Math.PI + this.Graphic.rotation.y) * (this.speed * adjmovement);//this.speed*adjmovement; // need stat on player object
-        movex = Math.sin(Math.PI + this.Graphic.rotation.y) * (this.speed * adjmovement);//0;
+        movex = Math.sin(Math.PI + this.Graphic.rotation.y) * (this.speed * adjmovement) + plus_dx;//0;
+
+        //movey = (this.currentDirection == "up") - (this.currentDirection == "down");
+        movey *= (this.speed * adjmovement);
+        //movex += this.speed * adjmovement;
         /////////////////////////
 
         //////////Bound player inside sky box need width height of window for bounding
         if ((this.Graphic.position.x + movex > height || this.Graphic.position.x + movex < -height) || (this.Graphic.position.z + movez > width || this.Graphic.position.z + movez < -width)) {
-            movez = 0;
-            movex = 0;
+            //movez = 0;
+            //movex = 0;
         }
         if (this.Graphic.position.x + movex < playingBoardSize && this.Graphic.position.x + movex > -playingBoardSize) { ///500
             this.cameraFollower.position.x = this.Graphic.position.x + movex;
@@ -346,14 +363,18 @@ function Player() {
         if (this.Graphic.position.z + movez < playingBoardSize && this.Graphic.position.z + movez > -playingBoardSize) { //500
             this.cameraFollower.position.z = this.Graphic.position.z + movez;
         }
+        this.cameraFollower.position.y = this.Graphic.position.y + movey;
+
         this.Graphic.position.z += movez;
         this.Graphic.position.x += movex;
+        this.Graphic.position.y += movey;
         this.BoundingBox.position.x = this.Graphic.position.x;
         this.BoundingBox.position.z = this.Graphic.position.z;
+        this.BoundingBox.position.y = this.Graphic.position.y;
         //////////////////////
         /////////TODO: move outside update/////
         lightSpeedGauge.style.width = ((this.LightSpeedGauge / this.LightSpeedGaugeCapacity) * 100) + "%";
-        ResourcesText.innerHTML = "Current Ship Level:" + this.shipLevel + " <br/> Next Level:" + this.Resources + "/" + nextlvlneed;
+        ResourcesText.innerHTML = "Current Ship Level: " + this.shipLevel + " <br/>Next Level: " + this.Resources + "/" + nextlvlneed;
         /////////////////////////////////
         var activeActions = this.actions.length;
         while (activeActions--) {
@@ -492,14 +513,12 @@ function handleKeyDown(event) {
         if (event.keyCode == 80) {
             PauseGame(!pause)
         }
-
     }
 }
 window.onblur = function () {
     if (loaded) {
         PauseGame(true)
     }
-
 };
 
 function PauseGame(status) {

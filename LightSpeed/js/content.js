@@ -17,8 +17,11 @@ function ContentLoad(startDisplay) {
     scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color3(0, 0, 0);
 
-    camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 500, new BABYLON.Vector3(0, 0, 0), scene);
-    camera.maxZ = 20000;
+    var alpha = 0,
+        beta  = Math.PI / 3;
+
+    camera = new BABYLON.ArcRotateCamera("Camera", alpha, beta, 500.0, new BABYLON.Vector3(0, 0, 0), scene);
+    camera.maxZ = 10000; // was 20000
 
     time = 0;
 
@@ -141,10 +144,13 @@ function ContentLoad(startDisplay) {
 
         var backgroundSystem = new BABYLON.Mesh.CreatePlane("background", 5000, scene);
         backgroundSystem.material = backmaterial;//new BABYLON.StandardMaterial("backgroundmat", scene);
-        backgroundSystem.rotation.y = Math.PI;
+        backgroundSystem.rotation.y = 0; // Was Math.PI
         backgroundSystem.rotation.x = Math.PI / 2;
         backgroundSystem.rotation.z = Math.PI * 1.5;
-        backgroundSystem.position.y = -700;
+        backgroundSystem.position.x = -2500;
+        backgroundSystem.position.y = -500; // Was -700
+        backgroundSystem.position.z = 500;
+
         //backgroundSystem.position.z = 2500;
         //player = new Player();
         //camera.target = player.BoundingBox.position;
